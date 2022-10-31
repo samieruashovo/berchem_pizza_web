@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'widget/my_text_field.dart';
+import 'widgets/my_text_field.dart';
 
 class LoginPage extends StatefulWidget {
   static Pattern pattern =
