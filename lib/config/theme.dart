@@ -4,13 +4,11 @@ ThemeData theme() {
   return ThemeData(
     scaffoldBackgroundColor: Color(0xFFF5F5F5),
     colorScheme: ColorScheme(
-      primary: Color(0xFFFE3C5B),
-      primaryVariant: Color(0xFFFE3C5B),
-      secondary: Color(0xFFe84545),
-      secondaryVariant: Color(0xFFe84545),
+      primary: Colors.white,
+      secondary: Colors.white,
       background: Color(0xFFFFFFFF),
       surface: Color(0xFFFFFFFF),
-      error: Color(0x000000),
+      error: Color(0x00000000),
       brightness: Brightness.light,
       onPrimary: Color(0xFFFFFFFF),
       onSecondary: Color(0xFFFFFFFF),

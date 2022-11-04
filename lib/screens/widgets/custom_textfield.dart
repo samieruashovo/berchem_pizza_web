@@ -44,7 +44,7 @@ class CustomTextField extends StatelessWidget {
       ),
       width: MediaQuery.of(context).size.width * 0.35,
       child: TextField(
-        minLines: 1,
+        //minLines: 1,
         maxLines: null,
         controller: controller,
         decoration: InputDecoration(

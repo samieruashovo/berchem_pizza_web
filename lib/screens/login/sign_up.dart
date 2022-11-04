@@ -193,7 +193,7 @@ class _RegisterViewState extends State<RegisterView> {
                                     hinttext: 'password',
                                     hintColor: Colors.grey,
                                     fontsize: 15,
-                                    obscureText: true),
+                                    obscureText: false),
                                 WSizedBox(wval: 0, hval: 0.02),
                                 CustomTextField(
                                   controller: _city,
@@ -259,7 +259,7 @@ class _RegisterViewState extends State<RegisterView> {
                                   borderradius: 25,
                                   fontsize: 12,
                                   fontweight: FontWeight.bold,
-                                  fontcolor: Colors.white,
+                                  fontcolor: Colors.red,
                                   onPressed: () async {
                                     final name = _firstName.text;
                                     final email = _email.text;

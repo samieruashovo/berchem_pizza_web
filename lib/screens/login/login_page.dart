@@ -141,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                                     hinttext: 'password',
                                     hintColor: Colors.grey,
                                     fontsize: 15,
-                                    obscureText: true),
+                                    obscureText: false),
                                 CustomButton(
                                   buttontext: 'Login',
                                   width: 0.20,

@@ -58,53 +58,25 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: const CustomAppBar(),
       body: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        //scrollDirection: Axis.vertical,
+        child: Row(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                //color: Colors.red,
-                height: 100.0,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: Category.categories.length,
-                  itemBuilder: (context, index) {
-                    return CategoryBox(category: Category.categories[index]);
-                  },
-                ),
-              ),
-            ),
-            // Padding(
-            //   padding: const EdgeInsets.all(8.0),
-            //   child: SizedBox(
-            //     height: 125.0,
-            //     child: ListView.builder(
-            //       shrinkWrap: true,
-            //       scrollDirection: Axis.horizontal,
-            //       itemCount: Promo.promos.length,
-            //       itemBuilder: (context, index) {
-            //         return PromoBox(promo: Promo.promos[index]);
-            //       },
-            //     ),
-            //   ),
-            // ),
-            const FoodSearchBox(),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  'Top Rated',
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-              ),
-            ),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.50,
-              child: Expanded(
-                  child: StreamBuilder(
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.75,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        'Top Rated',
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                    ),
+                  ),
+                  StreamBuilder(
                       stream: FirebaseFirestore.instance
                           .collection('products')
                           .snapshots(),
@@ -116,114 +88,113 @@ class _HomeScreenState extends State<HomeScreen> {
                           return const Center(
                               child: CircularProgressIndicator());
                         } else {
-                          return LayoutBuilder(builder: (context, constrains) {
-                            return GridView.builder(
-                                scrollDirection: Axis.vertical,
-                                itemCount: _producs.length,
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 4,
-                                  childAspectRatio: 1.1,
-                                  mainAxisSpacing: 8.0,
-                                  crossAxisSpacing: 8.0,
-                                ),
-                                itemBuilder: (_, index) {
-                                  return Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: InkWell(
-                                      onTap: () {},
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Expanded(
-                                            child: Container(
-                                              clipBehavior: Clip.none,
-                                              decoration: BoxDecoration(
-                                                  color: const Color(0xff7c94b6),
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                  image: DecorationImage(
-                                                      fit: BoxFit.fill,
-                                                      colorFilter:
-                                                          ColorFilter.mode(
-                                                              Colors
-                                                                  .black
-                                                                  .withOpacity(
-                                                                      0.5),
-                                                              BlendMode.dstATop),
-                                                      image: NetworkImage(
-                                                          _producs[index]
-                                                              ['imageUrl']))),
-                                            ),
+                          return GridView.builder(
+                              shrinkWrap: true,
+                              itemCount: _producs.length,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3,
+                                childAspectRatio: 1.1,
+                              ),
+                              itemBuilder: (_, index) {
+                                return InkWell(
+                                  onTap: () {},
+                                  child: Container(
+                                    margin: const EdgeInsets.all(15),
+                                    color: Colors.grey[200],
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Expanded(
+                                          child: Container(
+                                            clipBehavior: Clip.none,
+                                            decoration: BoxDecoration(
+                                                color: const Color(0xff7c94b6),
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                image: DecorationImage(
+                                                    fit: BoxFit.fill,
+                                                    colorFilter:
+                                                        ColorFilter.mode(
+                                                            Colors
+                                                                .black
+                                                                .withOpacity(
+                                                                    0.5),
+                                                            BlendMode.dstATop),
+                                                    image: NetworkImage(
+                                                        _producs[index]
+                                                            ['imageUrl']))),
                                           ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      _producs[index]["name"],
-                                                      style: const TextStyle(
-                                                          fontSize: 15),
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Text(
-                                                      "${_producs[index]["price"]} \$",
-                                                      style: TextStyle(
-                                                          color: Colors
-                                                              .green.shade400,
-                                                          fontSize: 13),
-                                                    )
-                                                  ]),
-                                            
-                                            ],
-                                          )
-                                        ],
-                                      ),
+                                        ),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              margin: const EdgeInsets.only(
+                                                  left: 5, top: 3),
+                                              child: Text(
+                                                _producs[index]["name"],
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.grey[600]),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                            Container(
+                                              margin: const EdgeInsets.only(
+                                                  left: 5, top: 3),
+                                              child: Text(
+                                                _producs[index]["price"],
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.grey[600]),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                          ],
+                                        ),
+                                        const Divider(),
+                                        Container(
+                                          margin: const EdgeInsets.only(
+                                              left: 5, top: 5, bottom: 5),
+                                          child: ElevatedButton(
+                                            onPressed: () {},
+                                            style: ElevatedButton.styleFrom(
+                                                backgroundColor: Colors.green,
+                                                // padding: const EdgeInsets.symmetric(
+                                                //     horizontal: ,
+                                                //     vertical: 20),
+                                                textStyle: const TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            child: const Text("Add to cart"),
+                                          ),
+                                        )
+                                      ],
                                     ),
-                                  );
-                                });
-                          });
+                                  ),
+                                );
+                              });
                         }
-                      })),
-            )
-
-            // BlocBuilder<RestaurantsBloc, RestaurantsState>(
-            //   builder: (context, state) {
-            //     if (state is RestaurantsLoading) {
-            //       return const Center(
-            //         child: CircularProgressIndicator(),
-            //       );
-            //     }
-            //     if (state is RestaurantsLoaded) {
-            //       return Container(
-            //         padding: const EdgeInsets.all(8.0),
-            //         // child: ListView.builder(
-            //         //   physics: const NeverScrollableScrollPhysics(),
-            //         //   shrinkWrap: true,
-            //         //   itemCount: state.restaurants.length,
-            //         //   itemBuilder: (context, index) {
-            //         //     // return RestaurantCard(
-            //         //     //   restaurant: state.restaurants[index],
-            //         //     // );
-            //         //   },
-            //         // ),
-            //       );
-            //     } else {
-            //       return const Text('Something went wrong');
-            //     }
-            //   },
-            // ),
+                      })
+                ],
+              ),
+            ),
+            Container(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                width: MediaQuery.of(context).size.width * 0.23,
+                height: MediaQuery.of(context).size.height* 0.90,
+                child: const BasketView()),
           ],
         ),
       ),
@@ -239,29 +210,32 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      leading: Row(
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
-            icon: const Icon(Icons.person, color: Colors.white),
+            icon: const Icon(Icons.person, color: Colors.grey),
             onPressed: () {
-              //user account
-              print("pressed");
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => UserLoginView()));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const UserLoginView()));
             },
           ),
+          const Text(
+            "Berchem Pizza",
+            style: TextStyle(
+                color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+          ),
           IconButton(
-            icon: const Icon(Icons.home, color: Colors.white),
+            icon: const Icon(Icons.home, color: Colors.grey),
             onPressed: () {
-              //user account
-              print("pressed");
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => AdminScreen()));
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const AdminScreen()));
             },
           ),
         ],
       ),
       centerTitle: false,
+
       // title: BlocBuilder<LocationBloc, LocationState>(
       //   builder: (context, state) {
       //     if (state is LocationLoading) {
@@ -302,4 +276,36 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
 
   @override
   Size get preferredSize => const Size.fromHeight(56);
+}
+
+class BasketView extends StatefulWidget {
+  const BasketView({super.key});
+
+  @override
+  State<BasketView> createState() => _BasketViewState();
+}
+
+class _BasketViewState extends State<BasketView> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.red,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text("Basket"),
+          Column(
+            children: [
+              const Text("total"),
+              Container(
+                  margin: EdgeInsets.symmetric(vertical: 10),
+                  child: ElevatedButton(
+                      onPressed: () {}, child: const Text("Chekcout")))
+            ],
+          ),
+        ],
+      ),
+      // width: MediaQuery.of(context).size.width * 0.10,
+    );
+  }
 }
