@@ -4,20 +4,21 @@ import '../blocks.dart';
 
 import '/models/models.dart';
 
-
 part 'filter_event.dart';
 part 'filter_state.dart';
 
 class FilterBloc extends Bloc<FilterEvent, FilterState> {
-  final RestaurantsBloc _restaurantsBloc;
+  FilterBloc(super.initialState);
 
-  FilterBloc({required RestaurantsBloc restaurantsBloc})
-      : _restaurantsBloc = restaurantsBloc,
-        super(FilterLoading()) {
-    on<LoadFilter>(_onLoadFilter);
-    on<UpdateCategoryFilter>(_onUpdateCategoryFilter);
-    on<UpdatePriceFilter>(_onUpdatePriceFilter);
-  }
+  // final RestaurantsBloc _restaurantsBloc;
+
+  // FilterBloc({required RestaurantsBloc restaurantsBloc})
+  //     : _restaurantsBloc = restaurantsBloc,
+  //       super(FilterLoading()) {
+  //   on<LoadFilter>(_onLoadFilter);
+  //   on<UpdateCategoryFilter>(_onUpdateCategoryFilter);
+  //   on<UpdatePriceFilter>(_onUpdatePriceFilter);
+  // }
 
   void _onLoadFilter(
     LoadFilter event,
@@ -29,7 +30,6 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
           categoryFilters: CategoryFilter.filters,
           priceFilters: PriceFilter.filters,
         ),
-
       ),
     );
   }
@@ -58,10 +58,10 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
           .map((filter) => filter.price.price)
           .toList();
 
-      List<Restaurant> filteredRestaurants = _getFilteredRestaurants(
-        categories,
-        prices,
-      );
+      // List<Restaurant> filteredRestaurants = _getFilteredRestaurants(
+      //   categories,
+      //   prices,
+      // );
 
       emit(
         FilterLoaded(
@@ -69,8 +69,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
             categoryFilters: updatedCategoryFilters,
             priceFilters: state.filter.priceFilters,
           ),
-          filteredRestaurants: filteredRestaurants,
-
+          //filteredRestaurants: filteredRestaurants,
         ),
       );
     }
@@ -100,10 +99,10 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
           .map((filter) => filter.price.price)
           .toList();
 
-      List<Restaurant> filteredRestaurants = _getFilteredRestaurants(
-        categories,
-        prices,
-      );
+      // List<Restaurant> filteredRestaurants = _getFilteredRestaurants(
+      //   categories,
+      //   prices,
+      // );
 
       emit(
         FilterLoaded(
@@ -111,30 +110,29 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
             categoryFilters: state.filter.categoryFilters,
             priceFilters: updatedPriceFilters,
           ),
-          filteredRestaurants: filteredRestaurants,
-
+          //filteredRestaurants: filteredRestaurants,
         ),
       );
     }
   }
 
-  List<Restaurant> _getFilteredRestaurants(
-    List<Category> categories,
-    List<String> prices,
-  ) {
-    return (_restaurantsBloc.state as RestaurantsLoaded)
-        .restaurants
-        .where(
-          (restaurant) => categories.any(
-            (category) => restaurant.categories.contains(category),
-          ),
-        )
-        .where(
-          (restaurant) => prices.any(
-            (price) => restaurant.priceCategory.contains(price),
-          ),
-        )
-        .toList();
-  }
+  // List<Restaurant> _getFilteredRestaurants(
+  //   List<Category> categories,
+  //   List<String> prices,
+  // ) {
+  //   return (_restaurantsBloc.state as RestaurantsLoaded)
+  //       .restaurants
+  //       .where(
+  //         (restaurant) => categories.any(
+  //           (category) => restaurant.categories.contains(category),
+  //         ),
+  //       )
+  //       .where(
+  //         (restaurant) => prices.any(
+  //           (price) => restaurant.priceCategory.contains(price),
+  //         ),
+  //       )
+  //       .toList();
+  // }
 
 }

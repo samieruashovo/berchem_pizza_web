@@ -11,13 +11,13 @@ class FilterLoading extends FilterState {}
 
 class FilterLoaded extends FilterState {
   final Filter filter;
-  final List<Restaurant>? filteredRestaurants;
+ // final List<Restaurant>? filteredRestaurants;
 
   FilterLoaded({
     this.filter = const Filter(),
-    this.filteredRestaurants = const <Restaurant>[],
+    //this.filteredRestaurants = const <Restaurant>[],
   });
 
   @override
-  List<Object?> get props => [filter, filteredRestaurants];
+  List<Object?> get props => [filter];//, filteredRestaurants
 }

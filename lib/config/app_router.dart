@@ -12,8 +12,8 @@ class AppRouter {
         return HomeScreen.route();
       case HomeScreen.routeName:
         return HomeScreen.route();
-      case LocationScreen.routeName:
-        return LocationScreen.route();
+      // case LocationScreen.routeName:
+      //   return LocationScreen.route();
       case FilterScreen.routeName:
         return FilterScreen.route();
       case BasketScreen.routeName:
@@ -24,12 +24,12 @@ class AppRouter {
         return DeliveryTimeScreen.route();
       case EditBasketScreen.routeName:
         return EditBasketScreen.route();
-      case RestaurantDetailsScreen.routeName:
-        return RestaurantDetailsScreen.route(
-            restaurant: settings.arguments as Restaurant);
-      case RestaurantListingScreen.routeName:
-        return RestaurantListingScreen.route(
-            restaurants: settings.arguments as List<Restaurant>);
+      // case RestaurantDetailsScreen.routeName:
+      //   return RestaurantDetailsScreen.route(
+      //       restaurant: settings.arguments as Restaurant);
+      // case RestaurantListingScreen.routeName:
+      //   return RestaurantListingScreen.route(
+      //       restaurants: settings.arguments as List<Restaurant>);
 
       default:
         return _errorRoute();

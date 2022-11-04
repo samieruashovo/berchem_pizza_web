@@ -13,3 +13,4 @@ const burgerCaterogyListDoc = "96NkMQXT7j2zX5IZQng1";
 const recipeCategoryListDoc = "Kc3aJjEL19rC66CfirYU";
 const pizzaCategoryListDoc = "Qix8DRktiEhk2ru2t9To";
 const drinkCategoryListDoc = "Nmgmc1fMzY7R5Iobi4Bm";
+const defaultPadding = 8.0;

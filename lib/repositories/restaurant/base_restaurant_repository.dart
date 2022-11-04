@@ -1,6 +1,6 @@
-import '/models/models.dart';
+// import '/models/models.dart';
 
-abstract class BaseRestaurantRepository {
-  Stream<List<Restaurant>> getRestaurants();
-  // Stream<Restaurant> getRestaurant();
-}
+// abstract class BaseRestaurantRepository {
+//   Stream<List<Restaurant>> getRestaurants();
+//   // Stream<Restaurant> getRestaurant();
+// }

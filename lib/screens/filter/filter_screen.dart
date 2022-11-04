@@ -39,12 +39,12 @@ class FilterScreen extends StatelessWidget {
                     ),
                     child: Text('Apply'),
                     onPressed: () {
-                      print(state.filteredRestaurants);
-                      Navigator.pushNamed(
-                        context,
-                        '/restaurant-listing',
-                        arguments: state.filteredRestaurants,
-                      );
+                      //print(state.filteredRestaurants);
+                      // Navigator.pushNamed(
+                      //   context,
+                      //   '/restaurant-listing',
+                      //   arguments: state.filteredRestaurants,
+                      // );
                     },
                   );
                 } else {

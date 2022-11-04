@@ -14,25 +14,25 @@ class CategoryBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Restaurant> restaurants = context.select((RestaurantsBloc bloc) {
-      if (bloc.state is RestaurantsLoaded) {
-        return (bloc.state as RestaurantsLoaded).restaurants;
-      } else {
-        return <Restaurant>[];
-      }
-    });
+    // List<Restaurant> restaurants = context.select((RestaurantsBloc bloc) {
+    //   if (bloc.state is RestaurantsLoaded) {
+    //     return (bloc.state as RestaurantsLoaded).restaurants;
+    //   } else {
+    //     return <Restaurant>[];
+    //   }
+    // });
 
-    final List<Restaurant> filteredRestaurants = restaurants
-        .where((restaurant) => restaurant.categories.contains(category))
-        .toList();
+    // final List<Restaurant> filteredRestaurants = restaurants
+    //     .where((restaurant)F => restaurant.categories.contains(category))
+    //     .toList();
 
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(
-          context,
-          '/restaurant-listing',
-          arguments: filteredRestaurants,
-        );
+        // Navigator.pushNamed(
+        //   context,
+        //   '/restaurant-listing',
+        //   arguments: filteredRestaurants,
+        // );
       },
       child: Container(
         margin: const EdgeInsets.only(right: 5.0),
