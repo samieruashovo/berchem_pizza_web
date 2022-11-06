@@ -1,5 +1,7 @@
+import 'package:berchem_pizza_web/screens/login/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:path/path.dart';
 
 import '../../blocks/login/auth/auth_exceptions.dart';
 import '../../blocks/login/login_bloc.dart';
@@ -88,7 +90,7 @@ class _RegisterViewState extends State<RegisterView> {
                           children: [
                             Container(
                               decoration: const BoxDecoration(
-                                color: Colors.blue,
+                                color: Colors.lightGreen,
                                 shape: BoxShape.circle,
                               ),
                               height: 40,
@@ -130,11 +132,19 @@ class _RegisterViewState extends State<RegisterView> {
                                       textsize: 18,
                                       fontWeight: FontWeight.normal,
                                     ),
-                                    TextWidget(
-                                      text: ' Log in',
-                                      textcolor: Colors.blue,
-                                      textsize: 18,
-                                      fontWeight: FontWeight.normal,
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const LoginPage()));
+                                      },
+                                      child: TextWidget(
+                                        text: ' Log in',
+                                        textcolor: Colors.blue,
+                                        textsize: 18,
+                                        fontWeight: FontWeight.normal,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -147,9 +157,9 @@ class _RegisterViewState extends State<RegisterView> {
                                         bordercolor: Colors.white,
                                         widh: 0.15,
                                         height: 0.05,
-                                        icon: Icons.credit_card,
+                                        icon: Icons.person,
                                         iconColor: Colors.grey,
-                                        hinttext: 'first name',
+                                        hinttext: 'first name ',
                                         hintColor: Colors.grey,
                                         fontsize: 15,
                                         obscureText: false),
@@ -160,7 +170,7 @@ class _RegisterViewState extends State<RegisterView> {
                                         bordercolor: Colors.white,
                                         widh: 0.15,
                                         height: 0.05,
-                                        icon: Icons.credit_card,
+                                        icon: Icons.person,
                                         iconColor: Colors.grey,
                                         hinttext: 'last name',
                                         hintColor: Colors.grey,
@@ -177,7 +187,7 @@ class _RegisterViewState extends State<RegisterView> {
                                     height: 0.05,
                                     icon: Icons.mail,
                                     iconColor: Colors.grey,
-                                    hinttext: 'email',
+                                    hinttext: 'email (required)',
                                     hintColor: Colors.grey,
                                     fontsize: 15,
                                     obscureText: false),
@@ -190,7 +200,7 @@ class _RegisterViewState extends State<RegisterView> {
                                     height: 0.05,
                                     icon: Icons.lock,
                                     iconColor: Colors.grey,
-                                    hinttext: 'password',
+                                    hinttext: 'password (required)',
                                     hintColor: Colors.grey,
                                     fontsize: 15,
                                     obscureText: false),
@@ -201,9 +211,9 @@ class _RegisterViewState extends State<RegisterView> {
                                   bordercolor: Colors.white,
                                   widh: 0.32,
                                   height: 0.05,
-                                  icon: Icons.lock,
+                                  icon: Icons.home,
                                   iconColor: Colors.grey,
-                                  hinttext: 'city',
+                                  hinttext: 'city (optional)',
                                   hintColor: Colors.grey,
                                   fontsize: 15,
                                   obscureText: false,
@@ -215,9 +225,9 @@ class _RegisterViewState extends State<RegisterView> {
                                   bordercolor: Colors.white,
                                   widh: 0.32,
                                   height: 0.05,
-                                  icon: Icons.lock,
+                                  icon: Icons.home,
                                   iconColor: Colors.grey,
-                                  hinttext: 'street',
+                                  hinttext: 'street (optional)',
                                   hintColor: Colors.grey,
                                   fontsize: 15,
                                   obscureText: false,
@@ -229,9 +239,9 @@ class _RegisterViewState extends State<RegisterView> {
                                   bordercolor: Colors.white,
                                   widh: 0.32,
                                   height: 0.05,
-                                  icon: Icons.lock,
+                                  icon: Icons.home,
                                   iconColor: Colors.grey,
-                                  hinttext: 'apartment',
+                                  hinttext: 'apartment (optional)',
                                   hintColor: Colors.grey,
                                   fontsize: 15,
                                   obscureText: false,
@@ -243,9 +253,10 @@ class _RegisterViewState extends State<RegisterView> {
                                   bordercolor: Colors.white,
                                   widh: 0.32,
                                   height: 0.05,
-                                  icon: Icons.lock,
+                                  icon: Icons.home,
                                   iconColor: Colors.grey,
-                                  hinttext: 'optional',
+                                  hinttext:
+                                      'Tell us more about your location (optional)',
                                   hintColor: Colors.grey,
                                   fontsize: 15,
                                   obscureText: false,
@@ -259,9 +270,10 @@ class _RegisterViewState extends State<RegisterView> {
                                   borderradius: 25,
                                   fontsize: 12,
                                   fontweight: FontWeight.bold,
-                                  fontcolor: Colors.red,
+                                  fontcolor: Colors.lightGreen,
                                   onPressed: () async {
-                                    final name = _firstName.text;
+                                    final fName = _firstName.text;
+                                    final lName = _lastName.text;
                                     final email = _email.text;
                                     final password = _password.text;
                                     final city = _city.text;
@@ -269,8 +281,17 @@ class _RegisterViewState extends State<RegisterView> {
                                     final apartment = _apartment.text;
                                     final optional = _optional.text;
                                     context.read<AuthBloc>().add(
-                                        AuthEventRegister(email, password, name,
-                                            city, street, apartment, optional));
+                                        AuthEventRegister(
+                                            email,
+                                            password,
+                                            city,
+                                            street,
+                                            apartment,
+                                            optional,
+                                            fName,
+                                            lName));
+                                    context.read<AuthBloc>().add(
+                                        const AuthEventSendEmailVerification());
                                   },
                                 ),
                               ],

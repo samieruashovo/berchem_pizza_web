@@ -94,6 +94,7 @@ class MyApp extends StatelessWidget {
           // ),
         ],
         child: MaterialApp(
+          
           title: 'FoodDelivery',
           debugShowCheckedModeBanner: false,
           theme: theme(),

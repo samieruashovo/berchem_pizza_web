@@ -1,3 +1,5 @@
+import 'package:berchem_pizza_web/admin/orders_from_user.dart';
+
 import 'package:berchem_pizza_web/screens/login/login_page.dart';
 import 'package:berchem_pizza_web/screens/login/sign_up.dart';
 import 'package:berchem_pizza_web/screens/profile/profile_view.dart';
@@ -7,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../blocks/login/login_bloc.dart';
 import '../../blocks/login/login_event.dart';
 import '../../blocks/login/login_state.dart';
+import 'verify_email_view.dart';
 
 class UserLoginView extends StatelessWidget {
   const UserLoginView({super.key});
@@ -16,20 +19,21 @@ class UserLoginView extends StatelessWidget {
     context.read<AuthBloc>().add(const AuthEventInitialize());
 
     return BlocConsumer<AuthBloc, AuthState>(listener: (context, state) {
-      if (state.isLoading) {
-        // LoadingScreen().show(
-        //   context: context,
-        //   text: state.loadingText ?? 'Please wait a moment',
-        // );
-      } else {
-        // LoadingScreen().hide();
-      }
+      // if (state.isLoading) {
+      //   // LoadingScreen().show(
+      //   //   context: context,
+      //   //   text: state.loadingText ?? 'Please wait a moment',
+      //   // );
+      // } else {
+      //   // LoadingScreen().hide();
+      // }
     }, builder: (context, state) {
       if (state is AuthStateLoggedIn) {
         return const ProfileScreen();
+      } else if (state is AuthStateAdmin) {
+        return const OrdersFromUser();
       } else if (state is AuthStateNeedsVerification) {
-        return const Text("Needs Verification");
-        // return const VerifyEmailView();
+        return VerifyEmailView();
       } else if (state is AuthStateLoggedOut) {
         return const LoginPage();
       } else if (state is AuthStateRegistering) {

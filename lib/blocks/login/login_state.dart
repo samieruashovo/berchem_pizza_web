@@ -28,6 +28,12 @@ class AuthStateLoggedIn extends AuthState {
       : super(isLoading: isLoading);
 }
 
+class AuthStateAdmin extends AuthState {
+  final AuthUser user;
+  const AuthStateAdmin({required this.user, required bool isLoading})
+      : super(isLoading: isLoading);
+}
+
 class AuthStateNeedsVerification extends AuthState {
   const AuthStateNeedsVerification({required bool isLoading})
       : super(isLoading: isLoading);

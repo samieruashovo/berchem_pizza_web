@@ -218,6 +218,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.3.8"
+  dio:
+    dependency: "direct main"
+    description:
+      name: dio
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.6"
   equatable:
     dependency: "direct main"
     description:
@@ -779,6 +786,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.5.1"
+  pretty_textfield:
+    dependency: "direct main"
+    description:
+      name: pretty_textfield
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1"
   process:
     dependency: transitive
     description:

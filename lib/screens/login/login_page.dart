@@ -9,6 +9,7 @@ import '../widgets/custom_button.dart';
 import '../widgets/custom_textfield.dart';
 import '../widgets/text_widget.dart';
 import '../widgets/wsized.dart';
+import 'sign_up.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -65,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                           children: [
                             Container(
                               decoration: const BoxDecoration(
-                                color: Colors.blue,
+                                color: Colors.lightGreen,
                                 shape: BoxShape.circle,
                               ),
                               height: 40,
@@ -107,11 +108,19 @@ class _LoginPageState extends State<LoginPage> {
                                       textsize: 18,
                                       fontWeight: FontWeight.normal,
                                     ),
-                                    TextWidget(
-                                      text: ' Sign up',
-                                      textcolor: Colors.blue,
-                                      textsize: 18,
-                                      fontWeight: FontWeight.normal,
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const RegisterView()));
+                                      },
+                                      child: TextWidget(
+                                        text: ' Sign up',
+                                        textcolor: Colors.blue,
+                                        textsize: 18,
+                                        fontWeight: FontWeight.normal,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -142,23 +151,29 @@ class _LoginPageState extends State<LoginPage> {
                                     hintColor: Colors.grey,
                                     fontsize: 15,
                                     obscureText: false),
-                                CustomButton(
-                                  buttontext: 'Login',
-                                  width: 0.20,
-                                  height: 0.05,
-                                  bordercolor: Colors.white,
-                                  borderradius: 25,
-                                  fontsize: 12,
-                                  fontweight: FontWeight.bold,
-                                  fontcolor: Colors.white,
-                                  onPressed: () async {
-                                    final email = _email.text;
-                                    final password = _password.text;
-                                    context.read<AuthBloc>().add(AuthEventLogIn(
-                                          email,
-                                          password,
-                                        ));
-                                  },
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  child: CustomButton(
+                                    buttontext: 'Login',
+                                    width: 0.20,
+                                    height: 0.05,
+                                    bordercolor: Colors.white,
+                                    borderradius: 25,
+                                    fontsize: 12,
+                                    fontweight: FontWeight.bold,
+                                    fontcolor: Colors.lightGreen,
+                                    onPressed: () async {
+                                      final email = _email.text;
+                                      final password = _password.text;
+                                      context
+                                          .read<AuthBloc>()
+                                          .add(AuthEventLogIn(
+                                            email,
+                                            password,
+                                          ));
+                                    },
+                                  ),
                                 ),
                               ],
                             ),

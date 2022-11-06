@@ -4,7 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class UserInfoCreateUpdate {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   Future<void> addUser(
-      {required String name,
+      {required String firstName,
+      required String lastName,
       required String uid,
       required String email,
       required String city,
@@ -13,7 +14,8 @@ class UserInfoCreateUpdate {
       required String optional}) async {
     try {
       model.User user = model.User(
-        name: name,
+        firstName: firstName,
+        lastName: lastName,
         uid: uid,
         email: email,
         city: city,

@@ -21,6 +21,7 @@ class _UploadItemState extends State<UploadItem> {
   String? imgUrl;
   FirebaseStorage storage = FirebaseStorage.instance;
   var file;
+  var fileName;
   @override
   Widget build(BuildContext context) {
     uploadToStorage() {
@@ -31,11 +32,13 @@ class _UploadItemState extends State<UploadItem> {
       input.click();
       input.onChange.listen((event) {
         file = input.files!.first;
+        fileName = input.files!.first.name;
         final reader = FileReader();
         reader.readAsDataUrl(file);
         reader.onLoadEnd.listen((event) async {
-          var snapshot = await fs.ref().child('newfile').putBlob(file);
+          var snapshot = await fs.ref().child(fileName).putBlob(file);
           downloadUrl = await snapshot.ref.getDownloadURL();
+          imgUrl = "";
           if (downloadUrl != null) {
             setState(() {
               imgUrl = downloadUrl;
@@ -45,12 +48,13 @@ class _UploadItemState extends State<UploadItem> {
       });
     }
 
-    Future<void> _upload(String imgLink, String name, String price,
-        String category, String description) async {
+    Future<void> _upload(String imgLink, String name, String priceId,
+        String price, String category, String description) async {
       String postId = const Uuid().v1();
       try {
         Product post = Product(
             id: postId,
+            priceId: priceId,
             name: name,
             category: category,
             description: description,
@@ -68,6 +72,7 @@ class _UploadItemState extends State<UploadItem> {
 
     Widget? addDescription() {
       TextEditingController? _name = TextEditingController();
+      TextEditingController? _priceId = TextEditingController();
       TextEditingController? _details = TextEditingController();
       TextEditingController? _price = TextEditingController();
       TextEditingController? _category = TextEditingController();
@@ -81,9 +86,10 @@ class _UploadItemState extends State<UploadItem> {
                 uploadToStorage();
               },
               child: imgUrl == null
-                  ? const Placeholder(
-                      fallbackHeight: 200,
-                      fallbackWidth: 400,
+                  ? Container(
+                      height: 300,
+                      width: 300,
+                      color: Colors.grey[300],
                     )
                   : SizedBox(
                       height: 300,
@@ -106,6 +112,21 @@ class _UploadItemState extends State<UploadItem> {
                 // icon: Icons.lock,
                 iconColor: Colors.grey,
                 hinttext: 'Product name',
+                hintColor: Colors.grey,
+                fontsize: 15,
+                obscureText: false),
+            const SizedBox(
+              height: 10,
+            ),
+            CustomTextField(
+                controller: _priceId,
+                borderradius: 20,
+                bordercolor: Colors.white,
+                widh: 0.32,
+                height: 0.05,
+                // icon: Icons.lock,
+                iconColor: Colors.grey,
+                hinttext: 'Price Id',
                 hintColor: Colors.grey,
                 fontsize: 15,
                 obscureText: false),
@@ -156,10 +177,14 @@ class _UploadItemState extends State<UploadItem> {
                 obscureText: false),
             ElevatedButton(
                 onPressed: () {
-                  _upload(imgUrl!, _name.text, _price.text, _category.text,
-                      _details.text);
+                  _upload(imgUrl!, _name.text, _priceId.text, _price.text,
+                      _category.text, _details.text);
                 },
-                child: const Icon(Icons.upload))
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    textStyle: const TextStyle(
+                        fontSize: 15, fontWeight: FontWeight.bold)),
+                child: const Text("Upload"))
           ],
         ),
       );
@@ -167,6 +192,9 @@ class _UploadItemState extends State<UploadItem> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: const BackButton(
+          color: Colors.black,
+        ),
         title: const Text("Upload product"),
       ),
       body: addDescription(),

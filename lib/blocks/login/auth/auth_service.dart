@@ -14,7 +14,8 @@ class AuthService implements AuthProvider {
   Future<AuthUser> createUser(
           {required String email,
           required String password,
-          required String name,
+          required String firstName,
+          required String lastName,
           required String city,
           required String street,
           required String apartment,
@@ -24,7 +25,8 @@ class AuthService implements AuthProvider {
           password: password,
           apartment: apartment,
           city: city,
-          name: name,
+          firstName: firstName,
+          lastName: lastName,
           optional: optional,
           street: street);
 

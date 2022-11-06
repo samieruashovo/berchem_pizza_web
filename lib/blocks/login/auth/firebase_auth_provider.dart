@@ -1,6 +1,6 @@
 import 'package:berchem_pizza_web/blocks/login/auth/add_user_info.dart';
 import 'package:firebase_auth/firebase_auth.dart'
-    show FirebaseAuth, FirebaseAuthException;
+    show FirebaseAuth, FirebaseAuthException, UserCredential;
 
 import 'auth_exceptions.dart';
 import 'auth_provider.dart';
@@ -11,20 +11,23 @@ class FirebaseAuthProvider implements AuthProvider {
   Future<AuthUser> createUser(
       {required String email,
       required String password,
-      required String name,
+      required String firstName,
+      required String lastName,
       required String city,
       required String street,
       required String apartment,
       required String optional}) async {
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      UserCredential cred =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
       final user = currentUser;
       if (user != null) {
         UserInfoCreateUpdate().addUser(
-            name: name,
+           firstName:firstName,
+           lastName: lastName,
             uid: user.id,
             email: email,
             city: city,

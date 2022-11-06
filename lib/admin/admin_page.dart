@@ -1,4 +1,6 @@
 import 'package:berchem_pizza_web/admin/upload_item_to_firebase.dart';
+import 'package:berchem_pizza_web/screens/home/home_screen.dart';
+import 'package:berchem_pizza_web/screens/widgets/custom_textfield.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -37,18 +39,38 @@ class AdminScreenState extends State<AdminScreen> {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController _priceController = TextEditingController();
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.lightGreen,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("Admin"),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => HomeScreen()));
+                  },
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      textStyle: const TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.bold)),
+                  child: const Text("Go to Home Page")),
+              const Text(
+                "Admin",
+                style:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              ),
               ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: ((context) => const UploadItem())));
                   },
-                  child: const Icon(Icons.add))
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      textStyle: const TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.bold)),
+                  child: const Text("Add Food"))
             ],
           ),
         ),
@@ -65,39 +87,35 @@ class AdminScreenState extends State<AdminScreen> {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
                       } else {
-                        return LayoutBuilder(builder: (context, constrains) {
-                          return GridView.builder(
-                              scrollDirection: Axis.vertical,
-                              itemCount: _producs.length,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 4,
-                                childAspectRatio: 0.8,
-                                mainAxisSpacing: 8.0,
-                                crossAxisSpacing: 8.0,
-                              ),
-                              itemBuilder: (_, index) {
-                                return Column(
+                        return GridView.builder(
+                            scrollDirection: Axis.vertical,
+                            itemCount: _producs.length,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              childAspectRatio: 1.1,
+                            ),
+                            itemBuilder: (_, index) {
+                              return Container(
+                                margin: const EdgeInsets.all(15),
+                                color: Colors.grey[200],
+                                child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Container(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.14,
-                                      clipBehavior: Clip.none,
-                                      decoration: BoxDecoration(
-                                          color: const Color(0xff7c94b6),
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          image: DecorationImage(
-                                              fit: BoxFit.fill,
-                                              colorFilter: ColorFilter.mode(
-                                                  Colors.black.withOpacity(0.5),
-                                                  BlendMode.dstATop),
-                                              image: NetworkImage(
-                                                  _producs[index]
-                                                      ['imageUrl']))),
+                                    Expanded(
+                                      child: Container(
+                                        clipBehavior: Clip.none,
+                                        decoration: BoxDecoration(
+                                            color: const Color(0xff7c94b6),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            image: DecorationImage(
+                                                fit: BoxFit.fill,
+                                                image: NetworkImage(
+                                                    _producs[index]
+                                                        ['imageUrl']))),
+                                      ),
                                     ),
                                     Row(
                                       mainAxisAlignment:
@@ -128,20 +146,107 @@ class AdminScreenState extends State<AdminScreen> {
                                         Row(
                                           children: [
                                             IconButton(
-                                                onPressed: () {},
-                                                icon: Icon(Icons.edit)),
+                                                onPressed: () {
+                                                  showPriceEditDialog(
+                                                      context,
+                                                      _priceController,
+                                                      _producs[index]["id"]);
+                                                },
+                                                icon: const Icon(Icons.edit)),
                                             IconButton(
-                                                onPressed: () {},
-                                                icon: Icon(Icons.delete)),
+                                                onPressed: () {
+                                                  showDeleteAlertDialog(context,
+                                                      _producs[index]["id"]);
+                                                },
+                                                icon: const Icon(Icons.delete)),
                                           ],
                                         )
                                       ],
                                     )
                                   ],
-                                );
-                              });
-                        });
+                                ),
+                              );
+                            });
                       }
                     }))));
   }
+}
+
+showDeleteAlertDialog(BuildContext context, String productId) {
+  // Create button
+
+  Widget okButton = TextButton(
+    child: const Text(
+      "OK",
+      style: TextStyle(color: Colors.black),
+    ),
+    onPressed: () {
+      FirebaseFirestore.instance.collection('products').doc(productId).delete();
+      Navigator.of(context).pop();
+    },
+  );
+  // Create AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: const Text("Edit price"),
+    content: const Text(
+      "Are you sure you want to delete",
+      style: TextStyle(color: Colors.black),
+    ),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+showPriceEditDialog(BuildContext context,
+    TextEditingController _priceController, String productId) {
+  // Create button
+
+  Widget okButton = TextButton(
+    child: const Text(
+      "OK",
+      style: TextStyle(color: Colors.black),
+    ),
+    onPressed: () {
+      FirebaseFirestore.instance.collection('products').doc(productId).update({
+        "price": _priceController.text,
+      });
+      Navigator.of(context).pop();
+    },
+  );
+  // Create AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: const Text("Edit price"),
+    content: CustomTextField(
+        controller: _priceController,
+        borderradius: 20,
+        bordercolor: Colors.white,
+        widh: 0.32,
+        height: 0.05,
+        icon: Icons.money,
+        iconColor: Colors.grey,
+        hinttext: 'Enter new price',
+        hintColor: Colors.grey,
+        fontsize: 15,
+        obscureText: false),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }
