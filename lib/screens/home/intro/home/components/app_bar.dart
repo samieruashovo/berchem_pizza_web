@@ -1,14 +1,22 @@
-import 'package:berchem_pizza_web/screens/home/home_screen.dart';
-
-import 'package:berchem_pizza_web/screens/login/login_screen.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+
+import 'package:berchem_pizza_web/screens/home/home_screen.dart';
 import 'package:berchem_pizza_web/screens/home/intro/home/components/menu_item.dart';
+import 'package:berchem_pizza_web/screens/login/login_screen.dart';
 
 import '../../../default_button.dart';
 
-class MyAppBar extends StatelessWidget {
-  const MyAppBar({super.key});
+class MyAppBar extends StatefulWidget {
+  MyAppBar({
+    Key? key,
+  }) : super(key: key);
 
+  @override
+  State<MyAppBar> createState() => _MyAppBarState();
+}
+
+class _MyAppBarState extends State<MyAppBar> {
   @override
   Widget build(BuildContext context) {
     return Container(

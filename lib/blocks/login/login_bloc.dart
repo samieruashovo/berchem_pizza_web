@@ -108,7 +108,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           ));
           emit(const AuthStateNeedsVerification(isLoading: false));
         }
-        emit(AuthStateLoggedIn(user: user, isLoading: false));
+        if (user.id == aUid) {
+          emit(AuthStateAdmin(isLoading: false, user: user));
+        } else {
+          emit(AuthStateLoggedIn(
+            user: user,
+            isLoading: false,
+          ));
+        }
       } on Exception catch (e) {
         emit(AuthStateLoggedOut(
           exception: e,

@@ -5,6 +5,7 @@ import 'dart:convert';
 
 import 'package:berchem_pizza_web/screens/home/intro/cons.dart' as c;
 import 'package:berchem_pizza_web/screens/home/intro/home/provider/order_provider.dart';
+import 'package:berchem_pizza_web/screens/home/search/search_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -12,14 +13,10 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:berchem_pizza_web/constants.dart';
-import 'package:berchem_pizza_web/models/basket_model.dart';
 import 'package:berchem_pizza_web/models/product_model.dart';
 import 'package:berchem_pizza_web/screens/home/intro/home/components/app_bar.dart';
 import 'package:berchem_pizza_web/screens/home/intro/home/provider/quanity_provider.dart';
 import 'package:berchem_pizza_web/screens/home/intro/prod.dart';
-import 'package:berchem_pizza_web/screens/login/login_screen.dart';
-import 'package:berchem_pizza_web/screens/screens.dart';
 
 import '../../models/order_model.dart';
 import '../../onlinePayment/checkout/stripe_checkout_web.dart';
@@ -50,6 +47,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  TextEditingController search = TextEditingController();
   TextEditingController _cityController = TextEditingController();
   TextEditingController _roadController = TextEditingController();
   TextEditingController _apartmentController = TextEditingController();
@@ -106,19 +104,17 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-  /* providers: [
-                  ChangeNotifierProvider<PriceState>(
-                      create: (context) => PriceState(0)),
-                  ChangeNotifierProvider<QuanityState>(
-                      create: (context) => QuanityState(0)),
-                  ChangeNotifierProvider<OrderQuantity>(
-                      create: (context) => OrderQuantity(orderM)),
-                ],*/
 
   @override
   Widget build(BuildContext context) {
+    final prodStream = FirebaseFirestore.instance
+        .collection('products')
+        .where(
+          'name',
+          isGreaterThanOrEqualTo: search.text,
+        )
+        .snapshots();
     return Scaffold(
-      //appBar: const CustomAppBar(),
       body: MultiProvider(
         providers: [
           ChangeNotifierProvider<PriceState>(
@@ -132,11 +128,10 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Expanded(
               child: SingleChildScrollView(
-                //scrollDirection: Axis.vertical,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const MyAppBar(),
+                    MyAppBar(),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -146,14 +141,67 @@ class _HomeScreenState extends State<HomeScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Row(
+                              Column(
                                 children: [
-                                  _buildCategories(
-                                      context, "assets/pizza.png", () {}),
-                                  _buildCategories(
-                                      context, "assets/juice.png", () {}),
-                                  _buildCategories(
-                                      context, "assets/burger.png", () {}),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      _buildCategories(
+                                          context, "assets/pizza.png", () {}),
+                                      _buildCategories(
+                                          context, "assets/juice.png", () {}),
+                                      _buildCategories(
+                                          context, "assets/burger.png", () {}),
+                                    ],
+                                  ),
+                                  Container(
+                                    height: 100,
+                                    width: 500,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[700],
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    padding: const EdgeInsets.only(
+                                        left: 40,
+                                        right: 40,
+                                        top: 20,
+                                        bottom: 10),
+                                    child: Column(
+                                      children: [
+                                        const Text(
+                                          "Search your favourite food",
+                                          style: TextStyle(
+                                              fontSize: 25,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Container(
+                                          width: 200,
+                                          height: 30,
+                                          padding:
+                                              const EdgeInsets.only(bottom: 10),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                          ),
+                                          child: TextField(
+                                            cursorColor: Colors.black,
+                                            decoration: const InputDecoration(
+                                                border: InputBorder.none,
+                                                icon:
+                                                    Icon(Icons.search_outlined),
+                                                hintText: "Type something"),
+                                            controller: search,
+                                            onChanged: (val) {
+                                              setState(() {});
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
                                 ],
                               ),
                               Padding(
@@ -168,9 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                               StreamBuilder(
-                                  stream: FirebaseFirestore.instance
-                                      .collection('products')
-                                      .snapshots(),
+                                  stream: prodStream,
                                   builder: (context,
                                       AsyncSnapshot<
                                               QuerySnapshot<
@@ -183,7 +229,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     } else {
                                       return GridView.builder(
                                           shrinkWrap: true,
-                                          itemCount: _producs.length,
+                                          itemCount: snapshot.data!.docs.length,
                                           gridDelegate:
                                               const SliverGridDelegateWithFixedCrossAxisCount(
                                             crossAxisCount: 3,
@@ -198,100 +244,106 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     listen: false)
                                                 .quantity;
                                             return Prod(
-                                                addToCart: () {
-                                                  addToBasket(
-                                                    _producs[index]["id"],
-                                                    _producs[index]["name"],
-                                                    _producs[index]["category"],
-                                                    _producs[index]
-                                                        ["description"],
-                                                    _producs[index]["imageUrl"],
-                                                    _producs[index]["price"],
-                                                  );
-                                                  // setState(() {
-                                                  double tempPrice = 0;
-                                                  tempPrice = double.parse(
-                                                      _producs[index]["price"]);
-                                                  //print(price);
-                                                  // print(
-                                                  //     "temp " + tempPrice.toString());
+                                              addToCart: () {
+                                                addToBasket(
+                                                  _producs[index]["id"],
+                                                  _producs[index]["name"],
+                                                  _producs[index]["category"],
+                                                  _producs[index]
+                                                      ["description"],
+                                                  _producs[index]["imageUrl"],
+                                                  _producs[index]["price"],
+                                                );
+                                                // setState(() {
+                                                double tempPrice = 0;
+                                                tempPrice = double.parse(
+                                                    _producs[index]["price"]);
+                                                //print(price);
+                                                // print(
+                                                //     "temp " + tempPrice.toString());
+                                                Provider.of<PriceState>(context,
+                                                        listen: false)
+                                                    .addPrice(tempPrice);
+                                                Provider.of<QuanityState>(
+                                                        context,
+                                                        listen: false)
+                                                    .addQuantity(1);
+
+                                                // price += tempPrice;
+                                                // quantity += 1;
+                                                if (orderM[_producs[index]
+                                                        ["name"]] ==
+                                                    null) {
+                                                  orderM[_producs[index]
+                                                      ["name"]] = 0;
+                                                }
+                                                orderM[_producs[index]
+                                                    ["name"]] = orderM[
+                                                        _producs[index]
+                                                            ["name"]]! +
+                                                    1;
+
+                                                // setLineItems.add(LineItem(
+                                                //     price: prodPriceId,
+                                                //     quantity: quantity));
+                                                mapPriceId[prodPriceId] =
+                                                    orderM[_producs[index]
+                                                        ["name"]]!;
+                                                print(mapPriceId);
+
+                                                print(orderM);
+                                                //  } );
+                                              },
+                                              removeFromCart: () {
+                                                //setState(() {
+                                                if (orderM[_producs[index]
+                                                        ["name"]]! >=
+                                                    1) {
+                                                  double tempPrice =
+                                                      double.parse(
+                                                          _producs[index]
+                                                              ["price"]);
                                                   Provider.of<PriceState>(
                                                           context,
                                                           listen: false)
-                                                      .addPrice(tempPrice);
-                                                  Provider.of<QuanityState>(
-                                                          context,
-                                                          listen: false)
-                                                      .addQuantity(1);
+                                                      .subPrice(tempPrice);
+                                                  //price -= tempPrice;
 
-                                                  // price += tempPrice;
-                                                  // quantity += 1;
-                                                  if (orderM[_producs[index]
-                                                          ["name"]] ==
-                                                      null) {
-                                                    orderM[_producs[index]
-                                                        ["name"]] = 0;
-                                                  }
                                                   orderM[_producs[index]
                                                       ["name"]] = orderM[
                                                           _producs[index]
-                                                              ["name"]]! +
+                                                              ["name"]]! -
                                                       1;
+                                                  Provider.of<QuanityState>(
+                                                          context,
+                                                          listen: false)
+                                                      .subQuantity(1);
+                                                  // quantity -= 1;
+                                                  // print(mapPriceId);
 
-                                                  // setLineItems.add(LineItem(
-                                                  //     price: prodPriceId,
-                                                  //     quantity: quantity));
-                                                  mapPriceId[prodPriceId] =
-                                                      orderM[_producs[index]
-                                                          ["name"]]!;
-                                                  print(mapPriceId);
-
-                                                  print(orderM);
-                                                  //  } );
-                                                },
-                                                removeFromCart: () {
-                                                  //setState(() {
-                                                  if (orderM[_producs[index]
-                                                          ["name"]]! >=
-                                                      1) {
-                                                    double tempPrice =
-                                                        double.parse(
-                                                            _producs[index]
-                                                                ["price"]);
-                                                    Provider.of<PriceState>(
-                                                            context,
-                                                            listen: false)
-                                                        .subPrice(tempPrice);
-                                                    //price -= tempPrice;
-
-                                                    orderM[_producs[index]
-                                                        ["name"]] = orderM[
-                                                            _producs[index]
-                                                                ["name"]]! -
-                                                        1;
-                                                    // Provider.of<OrderQuantity>(
-                                                    //         context,
-                                                    //         listen: false)
-                                                    //     .add(_producs[index]["name"],
-                                                    //         1);
-                                                    Provider.of<QuanityState>(
-                                                            context,
-                                                            listen: false)
-                                                        .subQuantity(1);
-                                                    // quantity -= 1;
-                                                    // print(mapPriceId);
-
-                                                    //print(orderM);
-                                                  } else {
-                                                    // print("not in the cart");
-                                                  }
-                                                  //});
-                                                },
-                                                imageLink: _producs[index]
-                                                    ['imageUrl'],
-                                                productTitle: _producs[index]
-                                                    ["name"],
-                                                productDesc: "");
+                                                  //print(orderM);
+                                                } else {
+                                                  // print("not in the cart");
+                                                }
+                                                //});
+                                              },
+                                              imageLink: snapshot
+                                                  .data!
+                                                  .docChanges[index]
+                                                  .doc['imageUrl'],
+                                              productTitle: snapshot
+                                                  .data!
+                                                  .docChanges[index]
+                                                  .doc['name'],
+                                              productDesc: snapshot
+                                                  .data!
+                                                  .docChanges[index]
+                                                  .doc['description'],
+                                              prodPrice: snapshot
+                                                  .data!
+                                                  .docChanges[index]
+                                                  .doc['price'],
+                                            );
                                           });
                                     }
                                   })
@@ -324,21 +376,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-/*
-Container(
-                      //margin: const EdgeInsets.only(top: 40),
-                      width: MediaQuery.of(context).size.width * 0.23,
-                      height: MediaQuery.of(context).size.height * 0.80,
-                      decoration:
-                          BoxDecoration(borderRadius: BorderRadius.circular(5)),
-                      child: LeftBasketScreeen(
-                        cityController: _cityController,
-                        roadController: _roadController,
-                        apartmentController: _apartmentController,
-                        moreInfoController: _moreInfoController,
-                        customerNameController: _customerNameController,
-                        numberInfoController: _numberInfoController,
-                      )),*/
 
 class LeftBasketScreeen extends StatelessWidget {
   final TextEditingController cityController;
@@ -556,71 +593,6 @@ addToBasket(String id, String name, String category, String description,
       imageUrl: imageUrl,
       price: price));
 }
-
-// class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
-//   const CustomAppBar({
-//     Key? key,
-//   }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return AppBar(
-//       backgroundColor: Colors.black,
-//       leading: IconButton(
-//         icon: const Icon(Icons.person, color: Colors.white),
-//         onPressed: () {
-//           Navigator.of(context).push(
-//               MaterialPageRoute(builder: (context) => const UserLoginView()));
-//         },
-//       ),
-//       title: const Text(
-//         "Berchem Pizza",
-//         style: TextStyle(
-//             color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-//       ),
-//       centerTitle: true,
-
-//       // title: BlocBuilder<LocationBloc, LocationState>(
-//       //   builder: (context, state) {
-//       //     if (state is LocationLoading) {
-//       //       return const Center(child: CircularProgressIndicator());
-//       //     }
-//       //     if (state is LocationLoaded) {
-//       //       return InkWell(
-//       //         onTap: () {
-//       //           Navigator.pushNamed(context, LocationScreen.routeName);
-//       //         },
-//       //         child: Column(
-//       //           crossAxisAlignment: CrossAxisAlignment.start,
-//       //           children: [
-//       //             Text(
-//       //               'CURRENT LOCATION',
-//       //               style: Theme.of(context)
-//       //                   .textTheme
-//       //                   .bodyText1!
-//       //                   .copyWith(color: Colors.white),
-//       //             ),
-//       //             Text(
-//       //               state.place.name,
-//       //               style: Theme.of(context)
-//       //                   .textTheme
-//       //                   .headline6!
-//       //                   .copyWith(color: Colors.white),
-//       //             ),
-//       //           ],
-//       //         ),
-//       //       );
-//       //     } else {
-//       //       return const Text('Something went wrong.');
-//       //     }
-//       //   },
-//       // ),
-//     );
-//   }
-
-//   @override
-//   Size get preferredSize => const Size.fromHeight(56);
-// }
 
 Future<void> _uploadOrder(
     String name,

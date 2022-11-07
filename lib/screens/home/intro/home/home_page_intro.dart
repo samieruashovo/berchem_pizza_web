@@ -36,7 +36,7 @@ class _HomePageIntroState extends State<HomePageIntro> {
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const <Widget>[
+          children: <Widget>[
             MyAppBar(),
             Spacer(),
             // It will cover 1/3 of free spaces

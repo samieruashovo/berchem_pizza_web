@@ -5,19 +5,21 @@ import '../../../constants.dart';
 import 'cons.dart' as c;
 
 class Prod extends StatelessWidget {
-  const Prod({
-    Key? key,
-    this.imageLink,
-    required this.addToCart,
-    required this.removeFromCart,
-    required this.productTitle,
-    required this.productDesc,
-  }) : super(key: key);
+  const Prod(
+      {Key? key,
+      this.imageLink,
+      required this.addToCart,
+      required this.removeFromCart,
+      required this.productTitle,
+      required this.productDesc,
+      required this.prodPrice})
+      : super(key: key);
   final VoidCallback addToCart;
   final VoidCallback removeFromCart;
   final productTitle;
   final productDesc;
   final imageLink;
+  final prodPrice;
 
   @override
   Widget build(BuildContext context) {
@@ -49,15 +51,20 @@ class Prod extends StatelessWidget {
                 productTitle,
                 maxLines: 2,
                 minFontSize: 14,
-                style: const TextStyle(
-                  fontSize: 15,
-                ),
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               AutoSizeText(
-                "sdjs",
+                productDesc,
                 maxLines: 2,
                 minFontSize: 14,
                 style: TextStyle(fontSize: 15, color: Colors.grey[600]),
+              ),
+              AutoSizeText(
+                "€ " + prodPrice,
+                maxLines: 2,
+                minFontSize: 14,
+                style: TextStyle(fontSize: 15, color: Colors.green),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
