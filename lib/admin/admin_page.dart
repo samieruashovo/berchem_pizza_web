@@ -39,7 +39,7 @@ class AdminScreenState extends State<AdminScreen> {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController _priceController = TextEditingController();
+    TextEditingController priceController = TextEditingController();
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.lightGreen,
@@ -49,7 +49,7 @@ class AdminScreenState extends State<AdminScreen> {
               ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => HomeScreen()));
+                        MaterialPageRoute(builder: (context) =>  HomeScreen()));
                   },
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
@@ -149,7 +149,7 @@ class AdminScreenState extends State<AdminScreen> {
                                                 onPressed: () {
                                                   showPriceEditDialog(
                                                       context,
-                                                      _priceController,
+                                                      priceController,
                                                       _producs[index]["id"]);
                                                 },
                                                 icon: const Icon(Icons.edit)),
@@ -207,7 +207,7 @@ showDeleteAlertDialog(BuildContext context, String productId) {
 }
 
 showPriceEditDialog(BuildContext context,
-    TextEditingController _priceController, String productId) {
+    TextEditingController priceController, String productId) {
   // Create button
 
   Widget okButton = TextButton(
@@ -217,7 +217,7 @@ showPriceEditDialog(BuildContext context,
     ),
     onPressed: () {
       FirebaseFirestore.instance.collection('products').doc(productId).update({
-        "price": _priceController.text,
+        "price": priceController.text,
       });
       Navigator.of(context).pop();
     },
@@ -226,7 +226,7 @@ showPriceEditDialog(BuildContext context,
   AlertDialog alert = AlertDialog(
     title: const Text("Edit price"),
     content: CustomTextField(
-        controller: _priceController,
+        controller: priceController,
         borderradius: 20,
         bordercolor: Colors.white,
         widh: 0.32,

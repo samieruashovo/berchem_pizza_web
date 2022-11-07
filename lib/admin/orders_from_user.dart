@@ -90,13 +90,23 @@ class _OrdersFromUserState extends State<OrdersFromUser> {
                           child: SizedBox(
                             width: 300,
                             child: ListTile(
-                              tileColor: Colors.grey[300],
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30)),
+                              tileColor: Colors.white,
                               title: Column(
                                 children: [
-                                  Text(name),
+                                  Text(
+                                    name,
+                                    style: const TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                   Text("Name: " +
                                       snapshot.data!.docs[index]
                                           ['customerName']),
+                                  Text("Mobile Number: " +
+                                      snapshot.data!.docs[index]
+                                          ['mobileNumber']),
                                   Text("City: " +
                                       snapshot.data!.docs[index]['city']),
                                   Text("Road: " +
@@ -105,6 +115,9 @@ class _OrdersFromUserState extends State<OrdersFromUser> {
                                       snapshot.data!.docs[index]['apartment']),
                                   Text("Optional: " +
                                       snapshot.data!.docs[index]['optional']),
+                                  Text("Payment Type: " +
+                                      snapshot.data!.docs[index]
+                                          ['paymentType']),
                                 ],
                               ),
                               trailing: IconButton(

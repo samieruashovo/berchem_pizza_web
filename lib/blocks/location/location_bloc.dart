@@ -5,6 +5,7 @@
 // import 'package:flutter/material.dart';
 // import 'package:geolocator/geolocator.dart';
 // import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 // import 'package:hive_flutter/hive_flutter.dart';
 
 // import '../../models/models.dart';
@@ -17,7 +18,7 @@
 //   final PlacesRepository _placesRepository;
 //   final GeolocationRepository _geolocationRepository;
 //   final LocalStorageRepository _localStorageRepository;
-//  // final RestaurantRepository _restaurantRepository;
+//   final RestaurantRepository _restaurantRepository;
 //   StreamSubscription? _placesSubscription;
 //   StreamSubscription? _geolocationSubscription;
 //   StreamSubscription? _restaurantsSubscription;

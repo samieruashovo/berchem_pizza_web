@@ -44,17 +44,17 @@ class Product extends Equatable {
         "price": price,
       };
 
-  // factory Product.fromSnapshot(Map<String, dynamic> snap) {
-  //   return Product(
-  //     id: snap['id'].toString(),
-  //     restaurantId: snap['restaurantId'],
-  //     name: snap['name'],
-  //     category: snap['category'],
-  //     description: snap['description'],
-  //     imageUrl: snap['imageUrl'],
-  //     price: snap['price'],
-  //   );
-  // }
+  factory Product.fromSnapshot(Map<String, dynamic> snap) {
+    return Product(
+      id: snap['id'].toString(),
+     // restaurantId: snap['restaurantId'],
+      name: snap['name'],
+      category: snap['category'],
+      description: snap['description'],
+      imageUrl: snap['imageUrl'],
+      price: snap['price'],
+    );
+  }
 
   @override
   List<Object?> get props => [id, name, category, description, imageUrl, price];

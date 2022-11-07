@@ -8,12 +8,7 @@ import 'package:js/js.dart';
 import '../constants.dart';
 
 void redirectToCheckout(BuildContext _, List<LineItem> lineItem) async {
-  //ass price id, quantity on parameter
   final stripe = Stripe(apiKey);
-  // List<LineItem> lineItem = [
-  //   LineItem(price: nikesPriceId, quantity: 3),
-  //   LineItem(price: prodPriceId, quantity: 2),
-  // ];
   stripe.redirectToCheckout(CheckoutOptions(
     lineItems: lineItem,
     mode: 'payment',

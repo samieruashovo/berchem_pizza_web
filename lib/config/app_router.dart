@@ -1,7 +1,6 @@
+import 'package:berchem_pizza_web/screens/home/intro/home/home_page_intro.dart';
 import 'package:flutter/material.dart';
-import '../screens/screens.dart';
 
-import '../models/models.dart';
 import '../screens/screens.dart';
 
 class AppRouter {
@@ -10,6 +9,8 @@ class AppRouter {
     switch (settings.name) {
       case '/':
         return HomeScreen.route();
+      case HomePageIntro.routeName:
+        return HomePageIntro.route();
       case HomeScreen.routeName:
         return HomeScreen.route();
       // case LocationScreen.routeName:

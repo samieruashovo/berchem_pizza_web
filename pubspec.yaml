@@ -68,6 +68,7 @@ dependencies:
   mime_type: ^1.0.0
   pretty_textfield: ^0.0.1
   dio: ^4.0.6
+  flutter_neumorphic: ^3.2.0
 
 dev_dependencies:
   hive_generator: ^1.1.3
