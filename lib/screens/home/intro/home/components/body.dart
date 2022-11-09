@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../cons.dart';
+import '../../../../../constants.dart';
 
 class Body extends StatelessWidget {
   const Body({super.key});
@@ -15,7 +15,7 @@ class Body extends StatelessWidget {
           Text(
             "Takeway & Delivery".toUpperCase(),
             style: Theme.of(context).textTheme.headline1!.copyWith(
-                  color: kTextcolor,
+                  color: kTextColor,
                   fontWeight: FontWeight.bold,
                 ),
           ),
@@ -23,7 +23,7 @@ class Body extends StatelessWidget {
             "Best online seller",
             style: TextStyle(
               fontSize: 21,
-              color: kTextcolor.withOpacity(0.34),
+              color: kTextColor.withOpacity(0.34),
             ),
           ),
           FittedBox(
@@ -38,30 +38,30 @@ class Body extends StatelessWidget {
               child: Row(
                 children: <Widget>[
                   Container(
-                    padding: EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                     height: 38,
                     width: 38,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: kPrimaryColor,
                       shape: BoxShape.circle,
                     ),
                     child: Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Color(0xFF372930),
                         shape: BoxShape.circle,
                       ),
                     ),
                   ),
-                  SizedBox(width: 15),
+                  const SizedBox(width: 15),
                   Text(
                     "Get Started".toUpperCase(),
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 19,
                     ),
                   ),
-                  SizedBox(width: 15),
+                  const SizedBox(width: 15),
                 ],
               ),
             ),

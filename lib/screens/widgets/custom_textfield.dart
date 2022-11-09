@@ -10,7 +10,7 @@ class CustomTextField extends StatelessWidget {
   final IconData? icon;
   final Color iconColor;
   final String hinttext;
-  final Color hintColor;
+  final Color hintColor = Colors.black;
   final Color? onlyborder;
   final double fontsize;
   final Color? textcolor;
@@ -27,7 +27,6 @@ class CustomTextField extends StatelessWidget {
     this.icon,
     required this.iconColor,
     required this.hinttext,
-    required this.hintColor,
     this.onlyborder,
     required this.fontsize,
     this.textcolor,
@@ -47,6 +46,7 @@ class CustomTextField extends StatelessWidget {
         //minLines: 1,
         maxLines: null,
         controller: controller,
+        cursorColor: Colors.black,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.all(15),
           suffixIcon: Icon(

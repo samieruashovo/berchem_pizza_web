@@ -13,15 +13,15 @@ class ServicesCard extends StatelessWidget {
     return Wrap(
       // ignore: prefer_const_literals_to_create_immutables
       children: [
-        Services(
+        const Services(
           image: "assets/images/delivery_boy.jpg",
           title: "Fastest Delivery",
         ),
-        Services(
+        const Services(
           image: "assets/images/menu.jpg",
           title: "So Much to Choose From",
         ),
-        Services(
+        const Services(
           image: "assets/images/offer.jpg",
           title: "Best Offer in Town",
         ),
@@ -45,7 +45,7 @@ class Services extends StatelessWidget {
         elevation: 5,
         borderRadius: BorderRadius.circular(8.0),
         child: Container(
-          padding: EdgeInsets.all(kPadding / 2),
+          padding: const EdgeInsets.all(kPadding / 2),
           width: 300,
           child: Column(
             children: [
@@ -60,22 +60,22 @@ class Services extends StatelessWidget {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Expanded(
                     child: Text(
                       title,
                       style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                          const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                     ),
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-              Text(
+              const Text(
                 "Lorem ipsum dolor sit amet,\nconsectetur adipiscing elit, ",
                 textAlign: TextAlign.center,
                 style: TextStyle(

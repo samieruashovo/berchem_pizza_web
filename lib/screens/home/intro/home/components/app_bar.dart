@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:berchem_pizza_web/screens/home/about.dart';
 import 'package:flutter/material.dart';
 
 import 'package:berchem_pizza_web/screens/home/home_screen.dart';
@@ -8,7 +9,7 @@ import 'package:berchem_pizza_web/screens/login/login_screen.dart';
 import '../../../default_button.dart';
 
 class MyAppBar extends StatefulWidget {
-  MyAppBar({
+  const MyAppBar({
     Key? key,
   }) : super(key: key);
 
@@ -55,7 +56,10 @@ class _MyAppBarState extends State<MyAppBar> {
           ),
           MenuItemp(
             title: "about",
-            press: () {},
+            press: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const AboutPage()));
+            },
           ),
           MenuItemp(
             title: "Login",

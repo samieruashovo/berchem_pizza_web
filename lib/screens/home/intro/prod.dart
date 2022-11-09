@@ -1,8 +1,9 @@
+// ignore_for_file: prefer_typing_uninitialized_variables, prefer_interpolation_to_compose_strings
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
-import 'cons.dart' as c;
 
 class Prod extends StatelessWidget {
   const Prod(
@@ -64,7 +65,7 @@ class Prod extends StatelessWidget {
                 "€ " + prodPrice,
                 maxLines: 2,
                 minFontSize: 14,
-                style: TextStyle(fontSize: 15, color: Colors.green),
+                style: const TextStyle(fontSize: 15, color: Colors.green),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -121,7 +122,7 @@ class CustomButtonOne extends StatelessWidget {
       child: ElevatedButton(
           style: TextButton.styleFrom(
             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-            backgroundColor: c.kPrimaryColor,
+            backgroundColor: kPrimaryColor,
           ),
           onPressed: press,
           child: text),

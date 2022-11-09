@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_unnecessary_containers, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
@@ -15,28 +17,28 @@ class HeaderWebMenu extends StatelessWidget {
           press: () {},
           title: "Menu",
         ),
-        SizedBox(
+        const SizedBox(
           width: kPadding,
         ),
         HeaderMenu(
           press: () {},
           title: "For Riders",
         ),
-        SizedBox(
+        const SizedBox(
           width: kPadding,
         ),
         HeaderMenu(
           press: () {},
           title: "About",
         ),
-        SizedBox(
+        const SizedBox(
           width: kPadding,
         ),
         HeaderMenu(
           press: () {},
           title: "Reviews",
         ),
-        SizedBox(
+        const SizedBox(
           width: kPadding,
         ),
         HeaderMenu(
@@ -61,28 +63,28 @@ class MobFooterMenu extends StatelessWidget {
           press: () {},
           title: "Menu",
         ),
-        SizedBox(
+        const SizedBox(
           width: kPadding,
         ),
         HeaderMenu(
           press: () {},
           title: "For Riders",
         ),
-        SizedBox(
+        const SizedBox(
           width: kPadding,
         ),
         HeaderMenu(
           press: () {},
           title: "About",
         ),
-        SizedBox(
+        const SizedBox(
           width: kPadding,
         ),
         HeaderMenu(
           press: () {},
           title: "Reviews",
         ),
-        SizedBox(
+        const SizedBox(
           width: kPadding,
         ),
         HeaderMenu(
@@ -109,7 +111,7 @@ class HeaderMenu extends StatelessWidget {
       child: Container(
         child: Text(
           title,
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
         ),
       ),
     );
@@ -135,28 +137,28 @@ class _MobMenuState extends State<MobMenu> {
             press: () {},
             title: "Menu",
           ),
-          SizedBox(
+          const SizedBox(
             height: kPadding,
           ),
           HeaderMenu(
             press: () {},
             title: "For Riders",
           ),
-          SizedBox(
+          const SizedBox(
             height: kPadding,
           ),
           HeaderMenu(
             press: () {},
             title: "About",
           ),
-          SizedBox(
+          const SizedBox(
             height: kPadding,
           ),
           HeaderMenu(
             press: () {},
             title: "Reviews",
           ),
-          SizedBox(
+          const SizedBox(
             height: kPadding,
           ),
           HeaderMenu(

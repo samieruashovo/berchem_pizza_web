@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first, prefer_typing_uninitialized_variables, must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -10,6 +11,7 @@ class Footer extends StatelessWidget {
 
   Footer({
     Key? key,
+    required this.kSecondaryColor,
   }) : super(key: key);
 
   @override
@@ -62,13 +64,13 @@ class Footer extends StatelessWidget {
                   ),
                 ),
                 if (Responsive.isDesktop(context))
-                  Expanded(flex: 3, child: HeaderWebMenu()),
+                  const Expanded(flex: 3, child: HeaderWebMenu()),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            if (!Responsive.isDesktop(context)) MobFooterMenu(),
+            if (!Responsive.isDesktop(context)) const MobFooterMenu(),
           ],
         ),
       ),
@@ -87,7 +89,7 @@ class SocialIcon extends StatelessWidget {
     return Container(
       height: 35,
       width: 35,
-      padding: EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(8.0),

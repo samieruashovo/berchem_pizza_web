@@ -24,12 +24,9 @@ class AuthEventRegister extends AuthEvent {
   final String lastName;
   final String email;
   final String password;
-  final String city;
-  final String street;
-  final String apartment;
-  final String optional;
-  const AuthEventRegister(this.email, this.password, this.city, this.street,
-      this.apartment, this.optional, this.firstName, this.lastName);
+
+  const AuthEventRegister(
+      this.email, this.password, this.firstName, this.lastName);
 }
 
 class AuthEventShouldRegister extends AuthEvent {
@@ -42,4 +39,9 @@ class AuthEventAdmin extends AuthEvent {
 
 class AuthEventLogOut extends AuthEvent {
   const AuthEventLogOut();
+}
+
+class AuthEventForgotPassword extends AuthEvent {
+  final String? email;
+  const AuthEventForgotPassword(this.email);
 }

@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../constants.dart';
@@ -23,7 +22,7 @@ class Products extends StatelessWidget {
           elevation: 5,
           borderRadius: BorderRadius.circular(15),
           child: Container(
-            padding: EdgeInsets.all(5.0),
+            padding: const EdgeInsets.all(5.0),
             child: Column(
               children: [
                 ClipRRect(
@@ -32,7 +31,7 @@ class Products extends StatelessWidget {
                   //   product.image,
                   // ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 // AutoSizeText(

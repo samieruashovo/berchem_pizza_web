@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'intro/cons.dart';
+import '../../constants.dart';
+
+
 
 class DefaultButtonp extends StatelessWidget {
   final String text;
   final Function()? press;
-  const DefaultButtonp({
+  const DefaultButtonp({super.key, 
     required this.text,
     required this.press,
   });

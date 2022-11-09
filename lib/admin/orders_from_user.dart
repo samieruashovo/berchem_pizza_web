@@ -1,9 +1,9 @@
-// ignore_for_file: prefer_interpolation_to_compose_strings
+// ignore_for_file: prefer_interpolation_to_compose_strings, unused_local_variable
 
 import 'dart:convert';
 
 import 'package:berchem_pizza_web/admin/admin_page.dart';
-import 'package:berchem_pizza_web/models/order_model.dart';
+import 'package:berchem_pizza_web/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -41,7 +41,7 @@ class _OrdersFromUserState extends State<OrdersFromUser> {
         }
       });
     } catch (e) {
-      print(e.toString());
+      // print(e.toString());
     }
   }
 
@@ -49,24 +49,27 @@ class _OrdersFromUserState extends State<OrdersFromUser> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.lightGreen,
+          backgroundColor: kPrimaryColor,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text("Orders"),
-              IconButton(
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const AdminScreen()));
-                  },
-                  icon: const Icon(Icons.add))
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const AdminScreen()));
+                },
+                child: const Text("Go to Admin page"),
+              )
             ],
           ),
         ),
         body: Center(
           child: StreamBuilder(
-              stream:
-                  FirebaseFirestore.instance.collection('orders').snapshots(),
+              stream: FirebaseFirestore.instance
+                  .collection('orders')
+                  .orderBy("time", descending: true)
+                  .snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const Text(
@@ -101,6 +104,8 @@ class _OrdersFromUserState extends State<OrdersFromUser> {
                                         fontSize: 25,
                                         fontWeight: FontWeight.bold),
                                   ),
+                                  Text("Time: " +
+                                      snapshot.data!.docs[index]['time']),
                                   Text("Name: " +
                                       snapshot.data!.docs[index]
                                           ['customerName']),
@@ -115,18 +120,18 @@ class _OrdersFromUserState extends State<OrdersFromUser> {
                                       snapshot.data!.docs[index]['apartment']),
                                   Text("Optional: " +
                                       snapshot.data!.docs[index]['optional']),
-                                  Text("Payment Type: " +
-                                      snapshot.data!.docs[index]
-                                          ['paymentType']),
+                                  Text(
+                                    "Payment Type: " +
+                                        snapshot.data!.docs[index]
+                                            ['paymentType'],
+                                    style: const TextStyle(color: Colors.red),
+                                  ),
                                 ],
                               ),
                               trailing: IconButton(
                                   onPressed: () async {
-                                    FirebaseFirestore.instance
-                                        .collection('orders')
-                                        .doc(snapshot.data!.docs[index]
-                                            ['orderId'])
-                                        .delete();
+                                    showDeleteConfirmationDialog(context,
+                                        snapshot.data!.docs[index]['orderId']);
                                   },
                                   icon: const Icon(
                                     Icons.delete_sweep_outlined,
@@ -140,4 +145,43 @@ class _OrdersFromUserState extends State<OrdersFromUser> {
               }),
         ));
   }
+}
+
+showDeleteConfirmationDialog(
+  BuildContext context,
+  String orderId,
+) {
+  Widget okButton = ElevatedButton(
+    style: ElevatedButton.styleFrom(
+        backgroundColor: kPrimaryColor,
+        textStyle: const TextStyle(
+            color: kTextColor, fontSize: 15, fontWeight: FontWeight.bold)),
+    onPressed: () {
+      FirebaseFirestore.instance.collection('orders').doc(orderId).delete();
+      Navigator.of(context).pop();
+    },
+    child: const Text(
+      "Okay",
+      style: TextStyle(color: kTextColor),
+    ),
+  );
+  // Create AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: const Text(
+      "Your order",
+      style: TextStyle(fontSize: 15),
+    ),
+    content: const Text("Are you sure you want to delete?"),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }

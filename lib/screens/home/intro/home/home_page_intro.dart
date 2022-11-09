@@ -4,7 +4,7 @@ import 'components/app_bar.dart';
 import 'components/body.dart';
 
 class HomePageIntro extends StatefulWidget {
-  static const String routeName = '//';
+  static const String routeName = '/';
 
   const HomePageIntro({super.key});
   static Route route() {
@@ -36,7 +36,7 @@ class _HomePageIntroState extends State<HomePageIntro> {
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
+          children: const <Widget>[
             MyAppBar(),
             Spacer(),
             // It will cover 1/3 of free spaces

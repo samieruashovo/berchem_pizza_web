@@ -1,6 +1,7 @@
+// ignore_for_file: avoid_web_libraries_in_flutter, prefer_typing_uninitialized_variables, no_leading_underscores_for_local_identifiers
+
 import 'package:berchem_pizza_web/models/product_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -66,7 +67,8 @@ class _UploadItemState extends State<UploadItem> {
             .set(post.toJson());
         Fluttertoast.showToast(msg: "Uploaded Successfully");
       } catch (e) {
-        print(e.toString());
+        Fluttertoast.showToast(msg: e.toString());
+        //print(e.toString());
       }
     }
 
@@ -112,7 +114,6 @@ class _UploadItemState extends State<UploadItem> {
                 // icon: Icons.lock,
                 iconColor: Colors.grey,
                 hinttext: 'Product name',
-                hintColor: Colors.grey,
                 fontsize: 15,
                 obscureText: false),
             const SizedBox(
@@ -127,7 +128,6 @@ class _UploadItemState extends State<UploadItem> {
                 // icon: Icons.lock,
                 iconColor: Colors.grey,
                 hinttext: 'Price Id',
-                hintColor: Colors.grey,
                 fontsize: 15,
                 obscureText: false),
             const SizedBox(
@@ -142,7 +142,6 @@ class _UploadItemState extends State<UploadItem> {
                 //icon: Icons.lock,
                 iconColor: Colors.grey,
                 hinttext: 'Product price',
-                hintColor: Colors.grey,
                 fontsize: 15,
                 obscureText: false),
             const SizedBox(
@@ -157,7 +156,6 @@ class _UploadItemState extends State<UploadItem> {
                 //icon: Icons.lock,
                 iconColor: Colors.grey,
                 hinttext: 'Product details',
-                hintColor: Colors.grey,
                 fontsize: 15,
                 obscureText: false),
             const SizedBox(
@@ -172,7 +170,6 @@ class _UploadItemState extends State<UploadItem> {
                 //icon: Icons.,
                 iconColor: Colors.grey,
                 hinttext: 'Product category',
-                hintColor: Colors.grey,
                 fontsize: 15,
                 obscureText: false),
             ElevatedButton(

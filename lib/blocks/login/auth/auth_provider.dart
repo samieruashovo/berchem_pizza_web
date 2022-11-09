@@ -7,15 +7,13 @@ abstract class AuthProvider {
     required String email,
     required String password,
   });
-  Future<AuthUser> createUser(
-      {required String email,
-      required String password,
-      required String firstName,
-      required String lastName,
-      required String city,
-      required String street,
-      required String apartment,
-      required String optional});
+  Future<AuthUser> createUser({
+    required String email,
+    required String password,
+    required String firstName,
+    required String lastName,
+  });
   Future<void> logOut();
   Future<void> sendEmailVerification();
+  Future<void> sendPasswordReset({required String toEmail});
 }

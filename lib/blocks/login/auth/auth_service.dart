@@ -11,24 +11,18 @@ class AuthService implements AuthProvider {
         FirebaseAuthProvider(),
       );
   @override
-  Future<AuthUser> createUser(
-          {required String email,
-          required String password,
-          required String firstName,
-          required String lastName,
-          required String city,
-          required String street,
-          required String apartment,
-          required String optional}) =>
+  Future<AuthUser> createUser({
+    required String email,
+    required String password,
+    required String firstName,
+    required String lastName,
+  }) =>
       provider.createUser(
-          email: email,
-          password: password,
-          apartment: apartment,
-          city: city,
-          firstName: firstName,
-          lastName: lastName,
-          optional: optional,
-          street: street);
+        email: email,
+        password: password,
+        firstName: firstName,
+        lastName: lastName,
+      );
 
   @override
   AuthUser? get currentUser => provider.currentUser;
@@ -45,6 +39,9 @@ class AuthService implements AuthProvider {
 
   @override
   Future<void> sendEmailVerification() => provider.sendEmailVerification();
+  @override
+  Future<void> sendPasswordReset({required String toEmail}) =>
+      provider.sendPasswordReset(toEmail: toEmail);
 
   // @override
   // Future<void> initialize() => provider.initialize();

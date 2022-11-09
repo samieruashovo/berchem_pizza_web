@@ -1,28 +1,27 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, unused_import
 // ignore_for_file: prefer_interpolation_to_compose_strings, use_build_context_synchronously, prefer_final_fields, prefer_typing_uninitialized_variables
 
 import 'dart:convert';
 
-import 'package:berchem_pizza_web/screens/home/intro/cons.dart' as c;
-import 'package:berchem_pizza_web/screens/home/intro/home/provider/order_provider.dart';
-import 'package:berchem_pizza_web/screens/home/search/search_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:berchem_pizza_web/models/product_model.dart';
-import 'package:berchem_pizza_web/screens/home/intro/home/components/app_bar.dart';
-import 'package:berchem_pizza_web/screens/home/intro/home/provider/quanity_provider.dart';
-import 'package:berchem_pizza_web/screens/home/intro/prod.dart';
-
+import '../../constants.dart';
 import '../../models/order_model.dart';
+import '../../models/product_model.dart';
 import '../../onlinePayment/checkout/stripe_checkout_web.dart';
 import '../../onlinePayment/constants.dart';
 import '../widgets/custom_textfield.dart';
+import 'intro/home/components/app_bar.dart';
+import 'intro/home/provider/order_provider.dart';
+import 'intro/home/provider/quanity_provider.dart';
 import 'intro/home/provider/value_provider.dart';
+import 'intro/prod.dart';
 
 List basketProd = [];
 double price = 0;
@@ -55,28 +54,9 @@ class _HomeScreenState extends State<HomeScreen> {
   TextEditingController _customerNameController = TextEditingController();
   TextEditingController _numberInfoController = TextEditingController();
   var userSnap;
-  final List _producs = [];
-  fetchProducts() async {
-    QuerySnapshot qn =
-        await FirebaseFirestore.instance.collection("products").get();
-    setState(() {
-      for (int i = 0; i < qn.docs.length; i++) {
-        _producs.add({
-          "name": qn.docs[i]["name"],
-          "category": qn.docs[i]["category"],
-          "price": qn.docs[i]["price"],
-          "imageUrl": qn.docs[i]["imageUrl"],
-          "description": qn.docs[i]["description"],
-          "id": qn.docs[i]["id"],
-        });
-      }
-    });
-    return qn.docs;
-  }
 
   @override
   void initState() {
-    fetchProducts();
     getUserInfo();
     super.initState();
   }
@@ -99,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
         width: 120,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: c.kPrimaryColor,
+            color: kPrimaryColor,
             image: DecorationImage(image: AssetImage(imageLink))),
       ),
     );
@@ -131,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    MyAppBar(),
+                    const MyAppBar(),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -246,21 +226,39 @@ class _HomeScreenState extends State<HomeScreen> {
                                             return Prod(
                                               addToCart: () {
                                                 addToBasket(
-                                                  _producs[index]["id"],
-                                                  _producs[index]["name"],
-                                                  _producs[index]["category"],
-                                                  _producs[index]
-                                                      ["description"],
-                                                  _producs[index]["imageUrl"],
-                                                  _producs[index]["price"],
+                                                  snapshot
+                                                      .data!
+                                                      .docChanges[index]
+                                                      .doc['id'],
+                                                  snapshot
+                                                      .data!
+                                                      .docChanges[index]
+                                                      .doc['name'],
+                                                  snapshot
+                                                      .data!
+                                                      .docChanges[index]
+                                                      .doc['category'],
+                                                  snapshot
+                                                      .data!
+                                                      .docChanges[index]
+                                                      .doc['description'],
+                                                  snapshot
+                                                      .data!
+                                                      .docChanges[index]
+                                                      .doc['imageUrl'],
+                                                  snapshot
+                                                      .data!
+                                                      .docChanges[index]
+                                                      .doc['price'],
                                                 );
-                                                // setState(() {
+
                                                 double tempPrice = 0;
                                                 tempPrice = double.parse(
-                                                    _producs[index]["price"]);
-                                                //print(price);
-                                                // print(
-                                                //     "temp " + tempPrice.toString());
+                                                    snapshot
+                                                        .data!
+                                                        .docChanges[index]
+                                                        .doc['price']);
+
                                                 Provider.of<PriceState>(context,
                                                         listen: false)
                                                     .addPrice(tempPrice);
@@ -269,63 +267,65 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         listen: false)
                                                     .addQuantity(1);
 
-                                                // price += tempPrice;
-                                                // quantity += 1;
-                                                if (orderM[_producs[index]
-                                                        ["name"]] ==
+                                                if (orderM[snapshot
+                                                        .data!
+                                                        .docChanges[index]
+                                                        .doc['name']] ==
                                                     null) {
-                                                  orderM[_producs[index]
-                                                      ["name"]] = 0;
+                                                  orderM[snapshot
+                                                      .data!
+                                                      .docChanges[index]
+                                                      .doc['name']] = 0;
                                                 }
-                                                orderM[_producs[index]
-                                                    ["name"]] = orderM[
-                                                        _producs[index]
-                                                            ["name"]]! +
+                                                orderM[snapshot
+                                                    .data!
+                                                    .docChanges[index]
+                                                    .doc['name']] = orderM[
+                                                        snapshot
+                                                            .data!
+                                                            .docChanges[index]
+                                                            .doc['name']]! +
                                                     1;
 
-                                                // setLineItems.add(LineItem(
-                                                //     price: prodPriceId,
-                                                //     quantity: quantity));
-                                                mapPriceId[prodPriceId] =
-                                                    orderM[_producs[index]
-                                                        ["name"]]!;
-                                                print(mapPriceId);
-
-                                                print(orderM);
-                                                //  } );
+                                                mapPriceId[snapshot
+                                                        .data!
+                                                        .docChanges[index]
+                                                        .doc['priceId']] =
+                                                    orderM[snapshot
+                                                        .data!
+                                                        .docChanges[index]
+                                                        .doc['name']]!;
                                               },
                                               removeFromCart: () {
-                                                //setState(() {
-                                                if (orderM[_producs[index]
-                                                        ["name"]]! >=
+                                                if (orderM[snapshot
+                                                        .data!
+                                                        .docChanges[index]
+                                                        .doc['name']]! >=
                                                     1) {
                                                   double tempPrice =
-                                                      double.parse(
-                                                          _producs[index]
-                                                              ["price"]);
+                                                      double.parse(snapshot
+                                                          .data!
+                                                          .docChanges[index]
+                                                          .doc['price']);
                                                   Provider.of<PriceState>(
                                                           context,
                                                           listen: false)
                                                       .subPrice(tempPrice);
-                                                  //price -= tempPrice;
 
-                                                  orderM[_producs[index]
-                                                      ["name"]] = orderM[
-                                                          _producs[index]
-                                                              ["name"]]! -
+                                                  orderM[snapshot
+                                                      .data!
+                                                      .docChanges[index]
+                                                      .doc['name']] = orderM[
+                                                          snapshot
+                                                              .data!
+                                                              .docChanges[index]
+                                                              .doc['name']]! -
                                                       1;
                                                   Provider.of<QuanityState>(
                                                           context,
                                                           listen: false)
                                                       .subQuantity(1);
-                                                  // quantity -= 1;
-                                                  // print(mapPriceId);
-
-                                                  //print(orderM);
-                                                } else {
-                                                  // print("not in the cart");
-                                                }
-                                                //});
+                                                } else {}
                                               },
                                               imageLink: snapshot
                                                   .data!
@@ -357,7 +357,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Container(
-                //margin: const EdgeInsets.only(top: 40),
                 width: MediaQuery.of(context).size.width * 0.23,
                 height: MediaQuery.of(context).size.height * 0.96,
                 decoration:
@@ -401,7 +400,7 @@ class LeftBasketScreeen extends StatelessWidget {
     final orderQ = Provider.of<OrderQuantity>(context).orderQ;
     List showToBasket = [];
     orderQ.forEach(((key, value) =>
-        showToBasket.add(basket(key: key, quantity: value.toInt()))));
+        showToBasket.add(Basket(key: key, quantity: value.toInt()))));
     return Container(
       color: Colors.grey[200],
       child: Column(
@@ -416,7 +415,6 @@ class LeftBasketScreeen extends StatelessWidget {
               Divider(),
             ],
           ),
-
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -425,7 +423,7 @@ class LeftBasketScreeen extends StatelessWidget {
                   itemCount: showToBasket.length,
                   itemBuilder: ((context, index) {
                     var name = showToBasket[index];
-                    //print(name.key);
+
                     return Container(
                       margin: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
@@ -434,52 +432,20 @@ class LeftBasketScreeen extends StatelessWidget {
                       ),
                       child: ListTile(
                         //style: ,
-                        title: Text("Item: " + name.key),
+                        title: Text(
+                          "Item: " + name.key,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                              color: Colors.black),
+                        ),
                         subtitle: Text(
                           "Quantity: " + name.quantity.toString(),
                           style: const TextStyle(
-                              fontSize: 15, color: Colors.black),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                              color: Colors.black),
                         ),
-                        // trailing: Row(
-                        //   mainAxisSize: MainAxisSize.min,
-                        //   //mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        //   children: [
-                        //     IconButton(
-                        //         onPressed: () {},
-                        //         icon: const Icon(
-                        //           Icons.add,
-                        //           color: Colors.green,
-                        //         )),
-                        //     IconButton(
-                        //         onPressed: () {
-                        //           if (orderM[products[index]["name"]]! >= 1) {
-                        //             double tempPrice =
-                        //                 double.parse(products[index]["price"]);
-                        //             Provider.of<PriceState>(context,
-                        //                     listen: false)
-                        //                 .subPrice(tempPrice);
-                        //             //price -= tempPrice;
-
-                        //             orderM[products[index]["name"]] =
-                        //                 orderM[products[index]["name"]]! - 1;
-                        //             Provider.of<OrderQuantity>(context,
-                        //                     listen: false)
-                        //                 .add(products[index]["name"], 1);
-                        //             Provider.of<QuanityState>(context,
-                        //                     listen: false)
-                        //                 .subQuantity(1);
-                        //             // quantity -= 1;
-                        //             print(price);
-                        //           } else {
-                        //             print("not in the cart");
-                        //           }
-                        //         },
-                        //         icon: const Icon(
-                        //           Icons.add,
-                        //           color: Colors.red,
-                        //         ))
-                        //   ],
-                        // ),
                       ),
                     );
                   })),
@@ -519,6 +485,24 @@ class LeftBasketScreeen extends StatelessWidget {
                   ),
                 ],
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Text(
+                      "Delivery Charge: ",
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Text(
+                    "5€",
+                    style: TextStyle(
+                        fontSize: 15, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
               Container(
                   margin: const EdgeInsets.only(bottom: 20),
                   child: ElevatedButton(
@@ -534,50 +518,50 @@ class LeftBasketScreeen extends StatelessWidget {
                             "Cash on Delivery");
                       },
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: c.kPrimaryColor,
+                          backgroundColor: kPrimaryColor,
                           textStyle: const TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold)),
+                              color: kTextColor,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold)),
                       child: const Text("Cash on Delivery"))),
               Container(
                   margin: const EdgeInsets.only(bottom: 20),
                   child: ElevatedButton(
                       onPressed: () {
-                        print(json.encode(orderM));
+                        //print(json.encode(orderM));
 
-                        // showAddressUpdateDialog(
-                        //     context,
-                        //     _cityController,
-                        //     _roadController,
-                        //     _apartmentController,
-                        //     _moreInfoController,
-                        //     _customerNameController,
-                        //     _numberInfoController,
-                        //     "paid online");
+                        showAddressUpdateDialog(
+                            context,
+                            cityController,
+                            roadController,
+                            apartmentController,
+                            moreInfoController,
+                            customerNameController,
+                            numberInfoController,
+                            "paid online");
                       },
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: c.kPrimaryColor,
+                          backgroundColor: kPrimaryColor,
                           textStyle: const TextStyle(
+                            color: kTextColor,
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
                           )),
                       child: const Text(
                         "Pay online",
-                        // style: TextStyle(color: Colors.black),
                       ))),
             ],
           ),
-          // const Divider(),
         ],
       ),
-      // width: MediaQuery.of(context).size.width * 0.10,
     );
   }
 }
 
-class basket {
+class Basket {
   String key;
   int quantity;
-  basket({
+  Basket({
     required this.key,
     required this.quantity,
   });
@@ -603,11 +587,15 @@ Future<void> _uploadOrder(
     String customerName,
     String mobileNumber,
     String paymentType) async {
-  String _postId = const Uuid().v1();
+  String postId = const Uuid().v1();
   try {
+    final f = DateFormat('HH:mm');
+
+    //print(f.format(DateTime.now()));
     OrderMod orderMod = OrderMod(
       name: name,
-      orderId: _postId,
+      orderId: postId,
+      time: f.format(DateTime.now()),
       city: city,
       road: road,
       apartment: apartment,
@@ -618,49 +606,19 @@ Future<void> _uploadOrder(
     );
     FirebaseFirestore.instance
         .collection('orders')
-        .doc(_postId)
+        .doc(postId)
         .set(orderMod.toJson());
   } catch (e) {}
 }
-//remove from cart
-/*onPressed: () {
-                                                      setState(() {
-                                                        if (orderM[_producs[
-                                                                    index]
-                                                                ["name"]]! >=
-                                                            1) {
-                                                          double tempPrice =
-                                                              double.parse(
-                                                                  _producs[
-                                                                          index]
-                                                                      [
-                                                                      "price"]);
-
-                                                          price -= tempPrice;
-
-                                                          orderM[_producs[index]
-                                                                  ["name"]] =
-                                                              orderM[_producs[
-                                                                          index]
-                                                                      [
-                                                                      "name"]]! -
-                                                                  1;
-                                                          quantity -= 1;
-                                                          print(price);
-                                                        } else {
-                                                          print(
-                                                              "not in the cart");
-                                                        }
-                                                      });
-                                                    },*/
 
 showOrderConfirmationDialog(
   BuildContext context,
 ) {
   Widget okButton = ElevatedButton(
     style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.green,
-        textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+        backgroundColor: kPrimaryColor,
+        textStyle: const TextStyle(
+            color: kTextColor, fontSize: 15, fontWeight: FontWeight.bold)),
     onPressed: () {
       Navigator.of(context).pop();
     },
@@ -692,28 +650,28 @@ showOrderConfirmationDialog(
 
 showAddressUpdateDialog(
     BuildContext context,
-    TextEditingController _cityController,
-    TextEditingController _roadController,
-    TextEditingController _apartmentController,
-    TextEditingController _moreInfoController,
-    TextEditingController _numberInfoController,
-    TextEditingController _customerNameController,
+    TextEditingController cityController,
+    TextEditingController roadController,
+    TextEditingController apartmentController,
+    TextEditingController moreInfoController,
+    TextEditingController numberInfoController,
+    TextEditingController customerNameController,
     paymentType) {
   // Create button
 
   Widget okButton = ElevatedButton(
     style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.green,
+        backgroundColor: kPrimaryColor,
         textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
     onPressed: () async {
       await _uploadOrder(
           json.encode(orderM),
-          _cityController.text,
-          _roadController.text,
-          _apartmentController.text,
-          _moreInfoController.text,
-          _customerNameController.text,
-          _numberInfoController.text,
+          cityController.text,
+          roadController.text,
+          apartmentController.text,
+          moreInfoController.text,
+          customerNameController.text,
+          numberInfoController.text,
           paymentType);
 
       mapPriceId.forEach((key, value) =>
@@ -733,7 +691,7 @@ showAddressUpdateDialog(
   );
   Widget cancelButton = ElevatedButton(
     style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.redAccent,
+        backgroundColor: Colors.redAccent[400],
         textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
     onPressed: () {
       Navigator.of(context).pop();
@@ -752,7 +710,7 @@ showAddressUpdateDialog(
     content: Column(
       children: [
         CustomTextField(
-            controller: _cityController,
+            controller: cityController,
             borderradius: 20,
             bordercolor: Colors.grey[300]!,
             widh: 0.32,
@@ -760,14 +718,13 @@ showAddressUpdateDialog(
             //icon: Icons.money,
             iconColor: Colors.grey,
             hinttext: 'Enter your city',
-            hintColor: Colors.black,
             fontsize: 15,
             obscureText: false),
         const SizedBox(
           height: 3,
         ),
         CustomTextField(
-            controller: _roadController,
+            controller: roadController,
             borderradius: 20,
             bordercolor: Colors.grey[300]!,
             widh: 0.32,
@@ -775,14 +732,13 @@ showAddressUpdateDialog(
             //icon: Icons.money,
             iconColor: Colors.grey,
             hinttext: 'Enter road no.',
-            hintColor: Colors.black,
             fontsize: 15,
             obscureText: false),
         const SizedBox(
           height: 3,
         ),
         CustomTextField(
-            controller: _apartmentController,
+            controller: apartmentController,
             borderradius: 20,
             bordercolor: Colors.grey[300]!,
             widh: 0.32,
@@ -790,14 +746,13 @@ showAddressUpdateDialog(
             // icon: Icons.money,
             iconColor: Colors.grey,
             hinttext: 'Enter your apartment',
-            hintColor: Colors.black,
             fontsize: 15,
             obscureText: false),
         const SizedBox(
           height: 3,
         ),
         CustomTextField(
-            controller: _moreInfoController,
+            controller: moreInfoController,
             borderradius: 20,
             bordercolor: Colors.grey[300]!,
             widh: 0.32,
@@ -805,14 +760,13 @@ showAddressUpdateDialog(
             //icon: Icons.money,
             iconColor: Colors.grey,
             hinttext: 'Tell us more about your location',
-            hintColor: Colors.black,
             fontsize: 15,
             obscureText: false),
         const SizedBox(
           height: 3,
         ),
         CustomTextField(
-            controller: _customerNameController,
+            controller: customerNameController,
             borderradius: 20,
             bordercolor: Colors.grey[300]!,
             widh: 0.32,
@@ -820,22 +774,19 @@ showAddressUpdateDialog(
             //icon: Icons.money,
             iconColor: Colors.grey,
             hinttext: 'Your name',
-            hintColor: Colors.black,
             fontsize: 15,
             obscureText: false),
         const SizedBox(
           height: 3,
         ),
         CustomTextField(
-            controller: _numberInfoController,
+            controller: numberInfoController,
             borderradius: 20,
             bordercolor: Colors.grey[300]!,
             widh: 0.32,
             height: 0.05,
-            // icon: Icons.money,
             iconColor: Colors.grey,
             hinttext: 'Enter your number',
-            hintColor: Colors.black,
             fontsize: 15,
             obscureText: false),
       ],

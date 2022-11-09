@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:berchem_pizza_web/blocks/login/auth/add_user_info.dart';
 import 'package:firebase_auth/firebase_auth.dart'
     show FirebaseAuth, FirebaseAuthException, UserCredential;
@@ -8,15 +10,12 @@ import 'auth_user.dart';
 
 class FirebaseAuthProvider implements AuthProvider {
   @override
-  Future<AuthUser> createUser(
-      {required String email,
-      required String password,
-      required String firstName,
-      required String lastName,
-      required String city,
-      required String street,
-      required String apartment,
-      required String optional}) async {
+  Future<AuthUser> createUser({
+    required String email,
+    required String password,
+    required String firstName,
+    required String lastName,
+  }) async {
     try {
       UserCredential cred =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -26,14 +25,11 @@ class FirebaseAuthProvider implements AuthProvider {
       final user = currentUser;
       if (user != null) {
         UserInfoCreateUpdate().addUser(
-           firstName:firstName,
-           lastName: lastName,
-            uid: user.id,
-            email: email,
-            city: city,
-            street: street,
-            apartment: apartment,
-            optional: optional);
+          firstName: firstName,
+          lastName: lastName,
+          uid: user.id,
+          email: email,
+        );
         return user;
       } else {
         throw UserNotLoggedInAuthExceptions();
@@ -109,6 +105,24 @@ class FirebaseAuthProvider implements AuthProvider {
       await user.sendEmailVerification();
     } else {
       throw UserNotLoggedInAuthExceptions();
+    }
+  }
+
+  @override
+  Future<void> sendPasswordReset({required String toEmail}) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: toEmail);
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case 'firebase_auth/invalid-email':
+          throw InvalidEmailAuthExceptions();
+        case 'firebase_auth/user-not-found':
+          throw UserNotFoundAuthExceptions();
+        default:
+          throw GenericAuthExceptions();
+      }
+    } catch (_) {
+      throw GenericAuthExceptions();
     }
   }
 }
