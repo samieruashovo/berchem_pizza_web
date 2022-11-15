@@ -9,6 +9,7 @@ class Product extends Equatable {
   final String description;
   final String imageUrl;
   final String price;
+  // final String extra;
 
   const Product({
     required this.id,
@@ -18,6 +19,7 @@ class Product extends Equatable {
     required this.description,
     required this.imageUrl,
     required this.price,
+    // required this.extra,
   });
 
   static Product fromSnap(DocumentSnapshot snap) {
@@ -44,17 +46,17 @@ class Product extends Equatable {
         "price": price,
       };
 
-  factory Product.fromSnapshot(Map<String, dynamic> snap) {
-    return Product(
-      id: snap['id'].toString(),
-     // restaurantId: snap['restaurantId'],
-      name: snap['name'],
-      category: snap['category'],
-      description: snap['description'],
-      imageUrl: snap['imageUrl'],
-      price: snap['price'],
-    );
-  }
+  // factory Product.fromSnapshot(Map<String, dynamic> snap) {
+  //   return Product(
+  //     id: snap['id'].toString(),
+  //     // restaurantId: snap['restaurantId'],
+  //     name: snap['name'],
+  //     category: snap['category'],
+  //     description: snap['description'],
+  //     imageUrl: snap['imageUrl'],
+  //     price: snap['price'],
+  //   );
+  // }
 
   @override
   List<Object?> get props => [id, name, category, description, imageUrl, price];

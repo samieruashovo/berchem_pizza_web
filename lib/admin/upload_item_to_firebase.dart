@@ -54,13 +54,15 @@ class _UploadItemState extends State<UploadItem> {
       String postId = const Uuid().v1();
       try {
         Product post = Product(
-            id: postId,
-            priceId: priceId,
-            name: name,
-            category: category,
-            description: description,
-            imageUrl: imgLink,
-            price: price);
+          id: postId,
+          priceId: priceId,
+          name: name,
+          category: category,
+          description: description,
+          imageUrl: imgLink,
+          price: price,
+          // extra: "",
+        );
         FirebaseFirestore.instance
             .collection('products')
             .doc(postId)

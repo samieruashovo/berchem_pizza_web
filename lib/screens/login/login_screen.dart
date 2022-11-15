@@ -13,6 +13,14 @@ import 'verify_email_view.dart';
 
 class UserLoginView extends StatelessWidget {
   const UserLoginView({super.key});
+  static const String routeName = 'account';
+
+  static Route route() {
+    return MaterialPageRoute(
+      builder: (_) => const UserLoginView(),
+      settings: const RouteSettings(name: routeName),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

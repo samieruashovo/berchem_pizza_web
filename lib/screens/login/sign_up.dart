@@ -1,4 +1,3 @@
-import 'package:berchem_pizza_web/screens/login/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,6 +13,14 @@ import '../widgets/wsized.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
+  static const String routeName = 'register';
+
+  static Route route() {
+    return MaterialPageRoute(
+      builder: (_) => const RegisterView(),
+      settings: const RouteSettings(name: routeName),
+    );
+  }
 
   @override
   State<RegisterView> createState() => _RegisterViewState();
@@ -124,8 +131,12 @@ class _RegisterViewState extends State<RegisterView> {
                             ),
                             InkWell(
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => const LoginPage()));
+                                
+                                // Navigator.of(context).push(MaterialPageRoute(
+                                //     builder: (context) => const LoginPage(),
+
+                                //     ),
+                                //     );
                               },
                               child: TextWidget(
                                 text: ' Log in',

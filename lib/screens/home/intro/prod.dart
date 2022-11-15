@@ -1,22 +1,25 @@
-// ignore_for_file: prefer_typing_uninitialized_variables, prefer_interpolation_to_compose_strings
+// ignore_for_file: prefer_interpolation_to_compose_strings, prefer_typing_uninitialized_variables
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
+// import 'cons.dart' as c;
 
 class Prod extends StatelessWidget {
-  const Prod(
-      {Key? key,
-      this.imageLink,
-      required this.addToCart,
-      required this.removeFromCart,
-      required this.productTitle,
-      required this.productDesc,
-      required this.prodPrice})
-      : super(key: key);
+  const Prod({
+    Key? key,
+    this.imageLink,
+    required this.addToCart,
+    required this.removeFromCart,
+    required this.toppingsExtra,
+    required this.productTitle,
+    required this.productDesc,
+    required this.prodPrice,
+  }) : super(key: key);
   final VoidCallback addToCart;
   final VoidCallback removeFromCart;
+  final toppingsExtra;
   final productTitle;
   final productDesc;
   final imageLink;
@@ -72,16 +75,25 @@ class Prod extends StatelessWidget {
                 children: [
                   Flexible(
                       child: CustomButtonOne(
-                          text: const Text("Add to Cart"), press: addToCart)),
+                          text: const Text(
+                            "Add",
+                            style: TextStyle(color: kTextColor),
+                          ),
+                          press: addToCart)),
+                  Flexible(
+                      child: Container(
+                    child: toppingsExtra,
+                  )),
                   Flexible(
                       child: CustomButtonOne(
                           text: const Icon(
                             Icons.delete,
                             size: 17,
+                            color: kTextColor,
                           ),
                           press: removeFromCart)),
                 ],
-              )
+              ),
             ],
           ),
         ),
@@ -100,7 +112,10 @@ class IconButto extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       color: color,
-      icon: Icon(icon),
+      icon: Icon(
+        icon,
+        color: kTextColor,
+      ),
       onPressed: onPressed,
     );
   }

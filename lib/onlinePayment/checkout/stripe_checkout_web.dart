@@ -12,8 +12,9 @@ void redirectToCheckout(BuildContext _, List<LineItem> lineItem) async {
   stripe.redirectToCheckout(CheckoutOptions(
     lineItems: lineItem,
     mode: 'payment',
-    successUrl: 'http://localhost:50137/#/success',
-    cancelUrl: 'http://localhost:50137/#/cancel',
+    successUrl: 'https://localhost:50137/#/success', //berchempizza.com/#menu
+    cancelUrl: 'https://localhost:50137/#/cancel', //berchempizza.com/
+    
   ));
 }
 

@@ -5,3 +5,4 @@ const secretKey =
     'sk_test_51M11AQDUlyUTyGY8a7tfuWHqLHNDgH4fjLLU3S0u8ksi8itghI4AEf8Z9q0S5U6x0ndxnqyoc8XUBAp1GAlyPs7100CyCRHXUx';
 const nikesPriceId = 'price_1M11N8DUlyUTyGY8Ncf0tarm';
 const prodPriceId = "price_1M11vHDUlyUTyGY8JMEoIIBO";
+const extraTopingPrice = "price_1M4QA9DUlyUTyGY8GHFmMzY1";

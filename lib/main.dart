@@ -21,7 +21,9 @@ void main() async {
         storageBucket: "berchem-pizza.appspot.com"),
   );
   Bloc.observer = SimpleBlocObserver();
-  runApp(const MyApp());
+  runApp(
+    
+    const MyApp());
 }
 
 class MyApp extends StatelessWidget {

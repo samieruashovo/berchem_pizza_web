@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first, unused_import
+// ignore_for_file: public_member_api_docs, sort_constructors_first, unused_import, empty_catches
 // ignore_for_file: prefer_interpolation_to_compose_strings, use_build_context_synchronously, prefer_final_fields, prefer_typing_uninitialized_variables
 
 import 'dart:convert';
@@ -8,9 +8,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:intl/intl.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../constants.dart';
 import '../../constants.dart';
 import '../../models/order_model.dart';
 import '../../models/product_model.dart';
@@ -18,6 +20,7 @@ import '../../onlinePayment/checkout/stripe_checkout_web.dart';
 import '../../onlinePayment/constants.dart';
 import '../widgets/custom_textfield.dart';
 import 'intro/home/components/app_bar.dart';
+import 'intro/home/provider/extra_topings_provider.dart';
 import 'intro/home/provider/order_provider.dart';
 import 'intro/home/provider/quanity_provider.dart';
 import 'intro/home/provider/value_provider.dart';
@@ -26,14 +29,27 @@ import 'intro/prod.dart';
 List basketProd = [];
 double price = 0;
 Map<String, int> orderM = {};
+Map<String, String> extraToppings = {};
+int extraToppingsQuantity = 0;
+String extraT = '';
 List<LineItem> setLineItems = [];
 Map<String, int> mapPriceId = {};
 int quantity = 0;
 
-class HomeScreen extends StatefulWidget {
-  static const String routeName = '//';
+class Topings {
+  final int id;
+  final String name;
 
+  Topings({
+    required this.id,
+    required this.name,
+  });
+}
+
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+  static const String routeName = 'menu';
+
   static Route route() {
     return MaterialPageRoute(
       builder: (_) => const HomeScreen(),
@@ -58,7 +74,23 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     getUserInfo();
+    // print("eee");
+    getdata();
     super.initState();
+  }
+
+  getdata() async {
+    try {
+      FirebaseFirestore.instance
+          .collection('products')
+          .where(
+            'name',
+            isGreaterThanOrEqualTo: search.text,
+          )
+          .snapshots();
+    } catch (e) {
+      // print(e.toString());
+    }
   }
 
   getUserInfo() async {
@@ -85,6 +117,19 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  static final List<Topings> _topings = [
+    Topings(id: 1, name: "Lion"),
+    Topings(id: 2, name: "Flamingo"),
+    Topings(id: 3, name: "Hippo"),
+    Topings(id: 4, name: "Horse"),
+    Topings(id: 5, name: "Tiger"),
+    Topings(id: 6, name: "Penguin"),
+  ];
+  final _items = _topings
+      .map((topings) => MultiSelectItem<String>(topings.name, topings.name))
+      .toList();
+  List _selectedToppings = [];
+
   @override
   Widget build(BuildContext context) {
     final prodStream = FirebaseFirestore.instance
@@ -103,6 +148,8 @@ class _HomeScreenState extends State<HomeScreen> {
               create: (context) => QuanityState(0)),
           ChangeNotifierProvider<OrderQuantity>(
               create: (context) => OrderQuantity(orderM)),
+          ChangeNotifierProvider<ExtraToppings>(
+              create: (context) => ExtraToppings(extraToppings)),
         ],
         child: Row(
           children: [
@@ -149,12 +196,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                         bottom: 10),
                                     child: Column(
                                       children: [
-                                        const Text(
-                                          "Search your favourite food",
-                                          style: TextStyle(
-                                              fontSize: 25,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold),
+                                        const Padding(
+                                          padding: EdgeInsets.all(5.0),
+                                          child: Text(
+                                            "Search your favourite food",
+                                            style: TextStyle(
+                                                fontSize: 25,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold),
+                                          ),
                                         ),
                                         Container(
                                           width: 200,
@@ -166,17 +216,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                             borderRadius:
                                                 BorderRadius.circular(5),
                                           ),
-                                          child: TextField(
-                                            cursorColor: Colors.black,
-                                            decoration: const InputDecoration(
-                                                border: InputBorder.none,
-                                                icon:
-                                                    Icon(Icons.search_outlined),
-                                                hintText: "Type something"),
-                                            controller: search,
-                                            onChanged: (val) {
-                                              setState(() {});
-                                            },
+                                          child: Center(
+                                            child: TextField(
+                                              cursorColor: Colors.black,
+                                              decoration: const InputDecoration(
+                                                  border: InputBorder.none,
+                                                  icon: Icon(
+                                                      Icons.search_outlined),
+                                                  hintText:
+                                                      "Type something..."),
+                                              controller: search,
+                                              onChanged: (val) {
+                                                setState(() {});
+                                              },
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -277,6 +330,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       .docChanges[index]
                                                       .doc['name']] = 0;
                                                 }
+                                                //quantity
                                                 orderM[snapshot
                                                     .data!
                                                     .docChanges[index]
@@ -286,7 +340,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             .docChanges[index]
                                                             .doc['name']]! +
                                                     1;
-
+//for pgetting price is
                                                 mapPriceId[snapshot
                                                         .data!
                                                         .docChanges[index]
@@ -295,6 +349,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         .data!
                                                         .docChanges[index]
                                                         .doc['name']]!;
+
+                                                //toppings
                                               },
                                               removeFromCart: () {
                                                 if (orderM[snapshot
@@ -327,6 +383,87 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       .subQuantity(1);
                                                 } else {}
                                               },
+                                              toppingsExtra: SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.50,
+                                                child: MultiSelectDialogField(
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
+                                                      color: kPrimaryColor),
+                                                  buttonIcon: const Icon(
+                                                    Icons.add,
+                                                    size: 1,
+                                                  ),
+                                                  unselectedColor:
+                                                      Colors.transparent,
+                                                  listType:
+                                                      MultiSelectListType.CHIP,
+                                                  buttonText: const Text(
+                                                    "Extra",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  title: const Text(
+                                                      "Extra Toppings"),
+                                                  items: _items,
+                                                  onConfirm: (values) {
+                                                    _selectedToppings = values;
+
+                                                    List names = values
+                                                        .map((e) => e)
+                                                        .toList();
+                                                    print(values.length);
+
+                                                    // String n = names.toString();
+                                                    String foodName = snapshot
+                                                        .data!
+                                                        .docChanges[index]
+                                                        .doc['name']
+                                                        .toString();
+
+                                                    // print(n);
+                                                    Provider.of<ExtraToppings>(
+                                                            context,
+                                                            listen: false)
+                                                        .add(foodName,
+                                                            names.join(","));
+                                                    extraT = Provider.of<
+                                                                ExtraToppings>(
+                                                            context,
+                                                            listen: false)
+                                                        .extraTop;
+
+                                                    extraToppingsQuantity =
+                                                        values.length;
+                                                  },
+                                                  chipDisplay:
+                                                      MultiSelectChipDisplay(
+                                                    scroll: true,
+                                                    onTap: (value) {
+                                                      Provider.of<ExtraToppings>(
+                                                              context,
+                                                              listen: false)
+                                                          .remove(
+                                                              snapshot
+                                                                  .data!
+                                                                  .docChanges[
+                                                                      index]
+                                                                  .doc['name'],
+                                                              value.toString());
+                                                      print("dsd" +
+                                                          json.encode(Provider
+                                                                  .of<ExtraToppings>(
+                                                                      context)
+                                                              .extraTopping));
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
                                               imageLink: snapshot
                                                   .data!
                                                   .docChanges[index]
@@ -498,8 +635,7 @@ class LeftBasketScreeen extends StatelessWidget {
                   ),
                   Text(
                     "5€",
-                    style: TextStyle(
-                        fontSize: 15, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -570,16 +706,19 @@ class Basket {
 addToBasket(String id, String name, String category, String description,
     String imageUrl, String price) {
   basketProd.add(Product(
-      id: id,
-      name: name,
-      category: category,
-      description: description,
-      imageUrl: imageUrl,
-      price: price));
+    id: id,
+    name: name,
+    category: category,
+    description: description,
+    imageUrl: imageUrl,
+    price: price,
+    // extra: extra,
+  ));
 }
 
 Future<void> _uploadOrder(
     String name,
+    String extra,
     String city,
     String road,
     String apartment,
@@ -594,6 +733,7 @@ Future<void> _uploadOrder(
     //print(f.format(DateTime.now()));
     OrderMod orderMod = OrderMod(
       name: name,
+      extra: extra,
       orderId: postId,
       time: f.format(DateTime.now()),
       city: city,
@@ -608,7 +748,9 @@ Future<void> _uploadOrder(
         .collection('orders')
         .doc(postId)
         .set(orderMod.toJson());
-  } catch (e) {}
+  } catch (e) {
+    print(e.toString());
+  }
 }
 
 showOrderConfirmationDialog(
@@ -666,6 +808,7 @@ showAddressUpdateDialog(
     onPressed: () async {
       await _uploadOrder(
           json.encode(orderM),
+          extraT,
           cityController.text,
           roadController.text,
           apartmentController.text,
@@ -676,6 +819,10 @@ showAddressUpdateDialog(
 
       mapPriceId.forEach((key, value) =>
           setLineItems.add(LineItem(price: key, quantity: value)));
+      if (extraToppingsQuantity > 0) {
+        setLineItems.add(
+            LineItem(price: extraTopingPrice, quantity: extraToppingsQuantity));
+      }
 
       if (paymentType == "paid online") {
         redirectToCheckout(context, setLineItems);

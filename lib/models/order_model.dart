@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 
 class OrderMod extends Equatable {
   final String name;
+  final String extra;
   final String orderId;
   final String time;
   final String paymentType;
@@ -14,6 +15,7 @@ class OrderMod extends Equatable {
   final String mobileNumber;
   const OrderMod({
     required this.name,
+    required this.extra,
     required this.orderId,
     required this.time,
     required this.paymentType,
@@ -30,6 +32,7 @@ class OrderMod extends Equatable {
 
     return OrderMod(
       name: snapshot["name"] ?? "",
+      extra: snapshot["extra"] ?? "",
       orderId: snapshot["orderId"] ?? "",
       time: snapshot["time"] ?? "",
       paymentType: snapshot["paymentType"] ?? "",
@@ -44,6 +47,7 @@ class OrderMod extends Equatable {
 
   Map<String, dynamic> toJson() => {
         "name": name,
+        "extra": extra,
         "orderId": orderId,
         "time": time,
         "paymentType": paymentType,

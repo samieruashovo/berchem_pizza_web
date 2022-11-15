@@ -50,22 +50,19 @@ class _MyAppBarState extends State<MyAppBar> {
           DefaultButtonp(
             text: "Menu",
             press: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const HomeScreen()));
+              Navigator.of(context).pushNamed(HomeScreen.routeName);
             },
           ),
           MenuItemp(
             title: "about",
             press: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const AboutPage()));
+              Navigator.of(context).pushNamed(AboutPage.routeName);
             },
           ),
           MenuItemp(
             title: "Login",
             press: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const UserLoginView()));
+              Navigator.of(context).pushNamed(UserLoginView.routeName);
             },
           ),
         ],

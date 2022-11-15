@@ -45,7 +45,6 @@ class _LoginPageState extends State<LoginPage> {
         if (state is AuthStateLoggedOut) {
           if (state.exception is UserNotFoundAuthExceptions) {
             await showErrorDialog(context, 'User not found ');
-
           } else if (state.exception is WrongPasswordAuthExceptions) {
             await showErrorDialog(context, 'Wrong credentials');
           } else if (state.exception is GenericAuthExceptions) {
@@ -116,9 +115,11 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             InkWell(
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        const RegisterView()));
+                                Navigator.of(context)
+                                    .pushNamed(RegisterView.routeName);
+                                // Navigator.of(context).push(MaterialPageRoute(
+                                //     builder: (context) =>
+                                //         const RegisterView()));
                               },
                               child: TextWidget(
                                 text: ' Sign up',

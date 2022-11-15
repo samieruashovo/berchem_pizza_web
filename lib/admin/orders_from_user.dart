@@ -23,27 +23,6 @@ class _OrdersFromUserState extends State<OrdersFromUser> {
   }
 
   final List _orders = [];
-  getData() async {
-    try {
-      QuerySnapshot qn =
-          await FirebaseFirestore.instance.collection("orders").get();
-      setState(() {
-        for (int i = 0; i < qn.docs.length; i++) {
-          _orders.add({
-            "name": qn.docs[i]["name"],
-            "orderId": qn.docs[i]["orderId"],
-            "customerName": qn.docs[i]["customerName"],
-            "city": qn.docs[i]["city"],
-            "road": qn.docs[i]["road"],
-            "apartment": qn.docs[i]["apartment"],
-            "optional": qn.docs[i]["optional"],
-          });
-        }
-      });
-    } catch (e) {
-      // print(e.toString());
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,6 +83,8 @@ class _OrdersFromUserState extends State<OrdersFromUser> {
                                         fontSize: 25,
                                         fontWeight: FontWeight.bold),
                                   ),
+                                  Text("Extra: " +
+                                      snapshot.data!.docs[index]['extra']),
                                   Text("Time: " +
                                       snapshot.data!.docs[index]['time']),
                                   Text("Name: " +
