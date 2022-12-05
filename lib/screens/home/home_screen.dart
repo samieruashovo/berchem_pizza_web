@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../constants.dart';
-import '../../constants.dart';
+import '../../languages/language_constants.dart';
 import '../../models/order_model.dart';
 import '../../models/product_model.dart';
 import '../../onlinePayment/checkout/stripe_checkout_web.dart';
@@ -196,11 +196,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                         bottom: 10),
                                     child: Column(
                                       children: [
-                                        const Padding(
-                                          padding: EdgeInsets.all(5.0),
+                                        Padding(
+                                          padding: const EdgeInsets.all(5.0),
                                           child: Text(
-                                            "Search your favourite food",
-                                            style: TextStyle(
+                                            translation(context)
+                                                .searchYourFavoriteFoodText,
+                                            style: const TextStyle(
                                                 fontSize: 25,
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.bold),
@@ -219,12 +220,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                           child: Center(
                                             child: TextField(
                                               cursorColor: Colors.black,
-                                              decoration: const InputDecoration(
+                                              decoration: InputDecoration(
                                                   border: InputBorder.none,
-                                                  icon: Icon(
+                                                  icon: const Icon(
                                                       Icons.search_outlined),
-                                                  hintText:
-                                                      "Type something..."),
+                                                  hintText: translation(context)
+                                                      .typeSomethingText),
                                               controller: search,
                                               onChanged: (val) {
                                                 setState(() {});
@@ -242,7 +243,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: Align(
                                   alignment: Alignment.topLeft,
                                   child: Text(
-                                    'Items available',
+                                    translation(context).itemsAvaibaleText,
                                     style:
                                         Theme.of(context).textTheme.headline4,
                                   ),
@@ -402,14 +403,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       Colors.transparent,
                                                   listType:
                                                       MultiSelectListType.CHIP,
-                                                  buttonText: const Text(
-                                                    "Extra",
-                                                    style: TextStyle(
+                                                  buttonText: Text(
+                                                    translation(context)
+                                                        .extraText,
+                                                    style: const TextStyle(
                                                         fontWeight:
                                                             FontWeight.bold),
                                                   ),
-                                                  title: const Text(
-                                                      "Extra Toppings"),
+                                                  title: Text(
+                                                      translation(context)
+                                                          .extraToppingsText),
                                                   items: _items,
                                                   onConfirm: (values) {
                                                     _selectedToppings = values;
@@ -417,7 +420,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     List names = values
                                                         .map((e) => e)
                                                         .toList();
-                                                    print(values.length);
+                                                    //print(values.length);
 
                                                     // String n = names.toString();
                                                     String foodName = snapshot
@@ -455,11 +458,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                       index]
                                                                   .doc['name'],
                                                               value.toString());
-                                                      print("dsd" +
-                                                          json.encode(Provider
-                                                                  .of<ExtraToppings>(
-                                                                      context)
-                                                              .extraTopping));
+                                                      // print("dsd" +
+                                                      //     json.encode(Provider
+                                                      //             .of<ExtraToppings>(
+                                                      //                 context)
+                                                      //         .extraTopping));
                                                     },
                                                   ),
                                                 ),
@@ -544,12 +547,13 @@ class LeftBasketScreeen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Column(
-            children: const [
+            children: [
               Text(
-                "Your Cart",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                translation(context).yourCartText,
+                style:
+                    const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
-              Divider(),
+              const Divider(),
             ],
           ),
           Column(
@@ -570,14 +574,16 @@ class LeftBasketScreeen extends StatelessWidget {
                       child: ListTile(
                         //style: ,
                         title: Text(
-                          "Item: " + name.key,
+                          translation(context).itemText + ": " + name.key,
                           style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 15,
                               color: Colors.black),
                         ),
                         subtitle: Text(
-                          "Quantity: " + name.quantity.toString(),
+                          translation(context).quantityText +
+                              ": " +
+                              name.quantity.toString(),
                           style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 15,
@@ -589,12 +595,12 @@ class LeftBasketScreeen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Text(
-                      "No of Items: ",
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                      translation(context).noOfItemsText+ ": ",
+                      style: const TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                   ),
                   Text(
@@ -607,12 +613,12 @@ class LeftBasketScreeen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Text(
-                      "Total: ",
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                      translation(context).totalText+": ",
+                      style: const TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                   ),
                   Text(
@@ -624,16 +630,16 @@ class LeftBasketScreeen extends StatelessWidget {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Text(
-                      "Delivery Charge: ",
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                      translation(context).deliveryChargeText+": ",
+                      style: const TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  Text(
+                  const Text(
                     "5€",
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                   ),
@@ -659,7 +665,7 @@ class LeftBasketScreeen extends StatelessWidget {
                               color: kTextColor,
                               fontSize: 15,
                               fontWeight: FontWeight.bold)),
-                      child: const Text("Cash on Delivery"))),
+                      child: Text(translation(context).cashOnDeliveryText))),
               Container(
                   margin: const EdgeInsets.only(bottom: 20),
                   child: ElevatedButton(
@@ -683,8 +689,8 @@ class LeftBasketScreeen extends StatelessWidget {
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
                           )),
-                      child: const Text(
-                        "Pay online",
+                      child: Text(
+                        translation(context).payOnlineText,
                       ))),
             ],
           ),
@@ -764,18 +770,18 @@ showOrderConfirmationDialog(
     onPressed: () {
       Navigator.of(context).pop();
     },
-    child: const Text(
-      "Okay",
-      style: TextStyle(color: Colors.white),
+    child: Text(
+      translation(context).okayText,
+      style: const TextStyle(color: Colors.white),
     ),
   );
   // Create AlertDialog
   AlertDialog alert = AlertDialog(
-    title: const Text(
-      "Your order",
-      style: TextStyle(fontSize: 15),
+    title: Text(
+      translation(context).yourOrderText,
+      style: const TextStyle(fontSize: 15),
     ),
-    content: const Text("Your order has been recorded"),
+    content: Text(translation(context).yourOrderHasBeenRecordedText),
     actions: [
       okButton,
     ],
@@ -831,9 +837,9 @@ showAddressUpdateDialog(
         showOrderConfirmationDialog(context);
       }
     },
-    child: const Text(
-      "Proceed",
-      style: TextStyle(color: Colors.white),
+    child: Text(
+      translation(context).proceedText,
+      style: const TextStyle(color: Colors.white),
     ),
   );
   Widget cancelButton = ElevatedButton(
@@ -843,16 +849,16 @@ showAddressUpdateDialog(
     onPressed: () {
       Navigator.of(context).pop();
     },
-    child: const Text(
-      "Cancel",
-      style: TextStyle(color: Colors.white),
+    child: Text(
+      translation(context).cancelText,
+      style: const TextStyle(color: Colors.white),
     ),
   );
   // Create AlertDialog
   AlertDialog alert = AlertDialog(
-    title: const Text(
-      "Tell us how can we find you",
-      style: TextStyle(fontSize: 15),
+    title: Text(
+      translation(context).tellUsHowCanWeFindYouText,
+      style: const TextStyle(fontSize: 15),
     ),
     content: Column(
       children: [
@@ -864,7 +870,7 @@ showAddressUpdateDialog(
             height: 0.05,
             //icon: Icons.money,
             iconColor: Colors.grey,
-            hinttext: 'Enter your city',
+            hinttext: translation(context).enterYourCityText,
             fontsize: 15,
             obscureText: false),
         const SizedBox(
@@ -878,7 +884,7 @@ showAddressUpdateDialog(
             height: 0.05,
             //icon: Icons.money,
             iconColor: Colors.grey,
-            hinttext: 'Enter road no.',
+            hinttext: translation(context).enterRoadNoText,
             fontsize: 15,
             obscureText: false),
         const SizedBox(
@@ -892,7 +898,7 @@ showAddressUpdateDialog(
             height: 0.05,
             // icon: Icons.money,
             iconColor: Colors.grey,
-            hinttext: 'Enter your apartment',
+            hinttext: translation(context).enterYourApartmentNo,
             fontsize: 15,
             obscureText: false),
         const SizedBox(
@@ -906,7 +912,7 @@ showAddressUpdateDialog(
             height: 0.05,
             //icon: Icons.money,
             iconColor: Colors.grey,
-            hinttext: 'Tell us more about your location',
+            hinttext: translation(context).tellUsMoreAboutYourLocationText,
             fontsize: 15,
             obscureText: false),
         const SizedBox(
@@ -920,7 +926,7 @@ showAddressUpdateDialog(
             height: 0.05,
             //icon: Icons.money,
             iconColor: Colors.grey,
-            hinttext: 'Your name',
+            hinttext: translation(context).yourNameText,
             fontsize: 15,
             obscureText: false),
         const SizedBox(
@@ -933,7 +939,7 @@ showAddressUpdateDialog(
             widh: 0.32,
             height: 0.05,
             iconColor: Colors.grey,
-            hinttext: 'Enter your number',
+            hinttext: translation(context).enterYourNoText,
             fontsize: 15,
             obscureText: false),
       ],

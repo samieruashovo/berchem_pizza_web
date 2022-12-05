@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../languages/language_constants.dart';
+
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
   static const String routeName = 'about';
@@ -20,10 +22,10 @@ class AboutPage extends StatelessWidget {
           Container(
             color: Colors.white,
             height: 80,
-            child: const Center(
+            child: Center(
                 child: Text(
-              "Berchem pizza",
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              translation(context).berchemPizzaText,
+              style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
             )),
           ),
           Container(

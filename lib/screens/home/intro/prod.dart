@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
+import '../../../languages/language_constants.dart';
 // import 'cons.dart' as c;
 
 class Prod extends StatelessWidget {
@@ -75,9 +76,9 @@ class Prod extends StatelessWidget {
                 children: [
                   Flexible(
                       child: CustomButtonOne(
-                          text: const Text(
-                            "Add",
-                            style: TextStyle(color: kTextColor),
+                          text: Text(
+                            translation(context).addText,
+                            style: const TextStyle(color: kTextColor),
                           ),
                           press: addToCart)),
                   Flexible(

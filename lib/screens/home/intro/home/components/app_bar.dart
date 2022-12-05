@@ -1,4 +1,5 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, use_build_context_synchronously
+import 'package:berchem_pizza_web/languages/language_constants.dart';
 import 'package:berchem_pizza_web/screens/home/about.dart';
 import 'package:flutter/material.dart';
 
@@ -6,6 +7,8 @@ import 'package:berchem_pizza_web/screens/home/home_screen.dart';
 import 'package:berchem_pizza_web/screens/home/intro/home/components/menu_item.dart';
 import 'package:berchem_pizza_web/screens/login/login_screen.dart';
 
+import '../../../../../languages/language.dart';
+import '../../../../../main.dart';
 import '../../../default_button.dart';
 
 class MyAppBar extends StatefulWidget {
@@ -43,27 +46,58 @@ class _MyAppBarState extends State<MyAppBar> {
           ),
           const SizedBox(width: 5),
           Text(
-            "Berchem Pizza".toUpperCase(),
+            translation(context).berchemPizzaText.toUpperCase(),
             style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
           const Spacer(),
           DefaultButtonp(
-            text: "Menu",
+            text: translation(context).homeText,
             press: () {
               Navigator.of(context).pushNamed(HomeScreen.routeName);
             },
           ),
           MenuItemp(
-            title: "about",
+            title: translation(context).aboutText,
             press: () {
               Navigator.of(context).pushNamed(AboutPage.routeName);
             },
           ),
           MenuItemp(
-            title: "Login",
+            title: translation(context).loginText,
             press: () {
               Navigator.of(context).pushNamed(UserLoginView.routeName);
             },
+          ),
+          DropdownButton<Language>(
+            isDense: true,
+            underline: const SizedBox.shrink(),
+            icon: const Icon(
+              Icons.language,
+              color: Colors.black,
+            ),
+            onChanged: (Language? language) async {
+              if (language != null) {
+                Locale locale = await setLocale(language.languageCode);
+                MyApp.setLocale(context, locale);
+              }
+            },
+            items: Language.languageList()
+                .map<DropdownMenuItem<Language>>(
+                  (e) => DropdownMenuItem<Language>(
+                    value: e,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Text(
+                          e.flag,
+                          style: const TextStyle(fontSize: 30),
+                        ),
+                        Text(e.name)
+                      ],
+                    ),
+                  ),
+                )
+                .toList(),
           ),
         ],
       ),

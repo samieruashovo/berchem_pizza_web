@@ -1,3 +1,4 @@
+import 'package:berchem_pizza_web/languages/language_constants.dart';
 import 'package:flutter/material.dart';
 
 class CheckoutScreen extends StatelessWidget {
@@ -18,7 +19,7 @@ class CheckoutScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('Checkout')),
       body: Center(
         child: ElevatedButton(
-          child: const Text('Home Screen'),
+          child: Text(translation(context).homeText),
           onPressed: () {
             Navigator.pushNamed(context, '/');
           },

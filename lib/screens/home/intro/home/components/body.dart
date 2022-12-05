@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../languages/language_constants.dart';
 
 class Body extends StatelessWidget {
   const Body({super.key});
@@ -13,14 +14,14 @@ class Body extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            "Takeway & Delivery".toUpperCase(),
+           translation(context).takewayDeliveryText.toUpperCase(),
             style: Theme.of(context).textTheme.headline1!.copyWith(
                   color: kTextColor,
                   fontWeight: FontWeight.bold,
                 ),
           ),
           Text(
-            "Best online seller",
+            translation(context).bestOnlineSellerText,
             style: TextStyle(
               fontSize: 21,
               color: kTextColor.withOpacity(0.34),
@@ -54,7 +55,7 @@ class Body extends StatelessWidget {
                   ),
                   const SizedBox(width: 15),
                   Text(
-                    "Get Started".toUpperCase(),
+                   translation(context).getStartedText.toUpperCase(),
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,

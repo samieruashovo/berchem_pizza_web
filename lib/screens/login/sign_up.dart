@@ -1,3 +1,5 @@
+
+import 'package:berchem_pizza_web/languages/language_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -10,6 +12,7 @@ import '../widgets/custom_textfield.dart';
 import '../widgets/show_error_dialog.dart';
 import '../widgets/text_widget.dart';
 import '../widgets/wsized.dart';
+import 'login_page.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
@@ -94,7 +97,7 @@ class _RegisterViewState extends State<RegisterView> {
                       width: 40,
                     ),
                     TextWidget(
-                      text: '  Berchem Pizza',
+                      text: translation(context).berchemPizzaText,
                       textcolor: Colors.black,
                       textsize: 45,
                       fontWeight: FontWeight.normal,
@@ -113,7 +116,7 @@ class _RegisterViewState extends State<RegisterView> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             TextWidget(
-                              text: 'Create new account',
+                              text: translation(context).createNewAccountText,
                               textcolor: Colors.black,
                               textsize: 30,
                               fontWeight: FontWeight.bold,
@@ -124,22 +127,22 @@ class _RegisterViewState extends State<RegisterView> {
                         Row(
                           children: [
                             TextWidget(
-                              text: 'Already have an account?',
+                              text:
+                                  translation(context).alreadyHaveAnAccountText,
                               textcolor: Colors.grey,
                               textsize: 18,
                               fontWeight: FontWeight.normal,
                             ),
                             InkWell(
                               onTap: () {
-                                
-                                // Navigator.of(context).push(MaterialPageRoute(
-                                //     builder: (context) => const LoginPage(),
-
-                                //     ),
-                                //     );
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => const LoginPage(),
+                                  ),
+                                );
                               },
                               child: TextWidget(
-                                text: ' Log in',
+                                text:translation(context).loginText,
                                 textcolor: Colors.blue,
                                 textsize: 18,
                                 fontWeight: FontWeight.normal,
@@ -158,7 +161,7 @@ class _RegisterViewState extends State<RegisterView> {
                                 height: 0.05,
                                 icon: Icons.person,
                                 iconColor: Colors.grey,
-                                hinttext: 'First name ',
+                                hinttext: translation(context).firstNameText,
                                 fontsize: 15,
                                 obscureText: false),
                             WSizedBox(wval: 0.02, hval: 0),
@@ -170,7 +173,7 @@ class _RegisterViewState extends State<RegisterView> {
                                 height: 0.05,
                                 icon: Icons.person,
                                 iconColor: Colors.grey,
-                                hinttext: 'Last name',
+                                hinttext: translation(context).lastNameText,
                                 fontsize: 15,
                                 obscureText: false),
                           ],
@@ -184,7 +187,7 @@ class _RegisterViewState extends State<RegisterView> {
                             height: 0.05,
                             icon: Icons.mail,
                             iconColor: Colors.grey,
-                            hinttext: 'Email (required)',
+                            hinttext:translation(context).email,
                             fontsize: 15,
                             obscureText: false),
                         WSizedBox(wval: 0, hval: 0.02),
@@ -196,12 +199,12 @@ class _RegisterViewState extends State<RegisterView> {
                             height: 0.05,
                             icon: Icons.lock,
                             iconColor: Colors.grey,
-                            hinttext: 'Password (required)',
+                            hinttext: translation(context).passwordText,
                             fontsize: 15,
                             obscureText: false),
                         WSizedBox(wval: 0, hval: 0.02),
                         CustomButton(
-                          buttontext: 'Create account',
+                          buttontext: translation(context).createAccountText,
                           width: 0.20,
                           height: 0.05,
                           bordercolor: Colors.white,

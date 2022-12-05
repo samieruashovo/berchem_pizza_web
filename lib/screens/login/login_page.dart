@@ -1,3 +1,4 @@
+import 'package:berchem_pizza_web/languages/language_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -78,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                       width: 40,
                     ),
                     TextWidget(
-                      text: '  Berchem Pizza',
+                      text: translation(context).berchemPizzaText,
                       textcolor: Colors.black,
                       textsize: 45,
                       fontWeight: FontWeight.normal,
@@ -97,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             TextWidget(
-                              text: 'Login',
+                              text: translation(context).loginText,
                               textcolor: Colors.black,
                               textsize: 30,
                               fontWeight: FontWeight.bold,
@@ -108,7 +109,8 @@ class _LoginPageState extends State<LoginPage> {
                         Row(
                           children: [
                             TextWidget(
-                              text: "Don'thave an account?",
+                              text:
+                                  "${translation(context).dontHaveAnAccountText}?",
                               textcolor: Colors.grey,
                               textsize: 18,
                               fontWeight: FontWeight.normal,
@@ -117,12 +119,9 @@ class _LoginPageState extends State<LoginPage> {
                               onTap: () {
                                 Navigator.of(context)
                                     .pushNamed(RegisterView.routeName);
-                                // Navigator.of(context).push(MaterialPageRoute(
-                                //     builder: (context) =>
-                                //         const RegisterView()));
                               },
                               child: TextWidget(
-                                text: ' Sign up',
+                                text: translation(context).signUpText,
                                 textcolor: Colors.blue,
                                 textsize: 18,
                                 fontWeight: FontWeight.normal,
@@ -140,7 +139,7 @@ class _LoginPageState extends State<LoginPage> {
                             height: 0.05,
                             icon: Icons.mail,
                             iconColor: Colors.grey,
-                            hinttext: 'Email',
+                            hinttext: translation(context).email,
                             fontsize: 15,
                             obscureText: false),
                         WSizedBox(wval: 0, hval: 0.02),
@@ -152,13 +151,13 @@ class _LoginPageState extends State<LoginPage> {
                             height: 0.05,
                             icon: Icons.lock,
                             iconColor: Colors.grey,
-                            hinttext: 'Eassword',
+                            hinttext: translation(context).passwordText,
                             fontsize: 15,
                             obscureText: false),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           child: CustomButton(
-                            buttontext: 'Login',
+                            buttontext: translation(context).loginText,
                             width: 0.20,
                             height: 0.05,
                             bordercolor: Colors.white,
@@ -176,6 +175,25 @@ class _LoginPageState extends State<LoginPage> {
                             },
                           ),
                         ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: TextButton(
+                            child:
+                                Text(translation(context).forgotPassowrdText),
+                            onPressed: () async {
+                              final email = _email.text;
+
+                              if (email.isNotEmpty) {
+                                context
+                                    .read<AuthBloc>()
+                                    .add(AuthEventForgotPassword(email));
+                              } else {
+                                showErrorDialog(
+                                    context, "Please Provide Email");
+                              }
+                            },
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -185,36 +203,6 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       ),
-      /*  child: Scaffold(
-        appBar: AppBar(title: const Text('Login')),
-        body: Column(
-          children: [
-            TextField(
-              decoration: const InputDecoration(hintText: 'Enter your email'),
-              controller: _email,
-              enableSuggestions: false,
-              autocorrect: false,
-              keyboardType: TextInputType.emailAddress,
-            ),
-            TextButton(
-                onPressed: () async {
-                  final email = _email.text;
-                  final password = _password.text;
-                  context.read<AuthBloc>().add(AuthEventLogIn(
-                        email,
-                        password,
-                      ));
-                },
-                child: const Text('Login')),
-            TextButton(
-              onPressed: () {
-                context.read<AuthBloc>().add(const AuthEventShouldRegister());
-              },
-              child: const Text('Not registered yet? Register here'),
-            ),
-          ],
-        ),
-      ),*/
     );
   }
 }

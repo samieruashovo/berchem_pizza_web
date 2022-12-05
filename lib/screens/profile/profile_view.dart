@@ -1,6 +1,7 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, prefer_typing_uninitialized_variables
 
 import 'package:berchem_pizza_web/constants.dart';
+import 'package:berchem_pizza_web/languages/language_constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -47,9 +48,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text(
-          "Berchem Pizzza",
-          style: TextStyle(color: kPrimaryColor, fontSize: 20),
+        title: Text(
+          translation(context).berchemPizzaText,
+          style: const TextStyle(color: kPrimaryColor, fontSize: 20),
         ),
         centerTitle: true,
       ),
@@ -152,16 +153,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
                           )),
-                      child: const Text("Update Info"),
+                      child: Text(translation(context).updateInfoText),
                     ),
                     const SizedBox(
                       height: 50,
                     ),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        "Forgot password?",
-                        style: TextStyle(fontSize: 15),
+                        "${translation(context).forgotPassowrdText}?",
+                        style: const TextStyle(fontSize: 15),
                       ),
                     ),
                     ElevatedButton(
@@ -178,14 +179,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
                           )),
-                      child: const Text("Send password reset link"),
+                      child:
+                          Text(translation(context).sendPasswordResetLinkText),
                     ),
                     const SizedBox(
                       height: 30,
                     ),
                     ElevatedButton(
                       onPressed: () async {
-                    
                         context.read<AuthBloc>().add(const AuthEventLogOut());
                       },
                       style: ElevatedButton.styleFrom(
@@ -195,7 +196,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
                           )),
-                      child: const Text("Logout"),
+                      child: Text(translation(context).logoutText),
                     ),
                   ],
                 ));

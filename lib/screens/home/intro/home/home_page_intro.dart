@@ -1,3 +1,4 @@
+import 'package:berchem_pizza_web/languages/language_constants.dart';
 import 'package:flutter/material.dart';
 
 import 'components/app_bar.dart';
@@ -19,6 +20,8 @@ class HomePageIntro extends StatefulWidget {
 }
 
 class _HomePageIntroState extends State<HomePageIntro> {
+
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
