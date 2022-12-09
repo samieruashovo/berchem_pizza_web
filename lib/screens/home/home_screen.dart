@@ -598,7 +598,7 @@ class LeftBasketScreeen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Text(
-                      translation(context).noOfItemsText+ ": ",
+                      translation(context).noOfItemsText + ": ",
                       style: const TextStyle(
                           fontSize: 15, fontWeight: FontWeight.bold),
                     ),
@@ -616,7 +616,7 @@ class LeftBasketScreeen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Text(
-                      translation(context).totalText+": ",
+                      translation(context).totalText + ": ",
                       style: const TextStyle(
                           fontSize: 15, fontWeight: FontWeight.bold),
                     ),
@@ -634,7 +634,7 @@ class LeftBasketScreeen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Text(
-                      translation(context).deliveryChargeText+": ",
+                      translation(context).deliveryChargeText + ": ",
                       style: const TextStyle(
                           fontSize: 15, fontWeight: FontWeight.bold),
                     ),
@@ -755,7 +755,7 @@ Future<void> _uploadOrder(
         .doc(postId)
         .set(orderMod.toJson());
   } catch (e) {
-    print(e.toString());
+    //print(e.toString());
   }
 }
 

@@ -38,8 +38,8 @@ class CustomTextField extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: onlyborder ?? Colors.transparent),
-        borderRadius: BorderRadius.circular(borderradius),
-        color: bordercolor,
+        borderRadius: BorderRadius.circular(5.0),
+        color: Colors.blue[50],
       ),
       width: MediaQuery.of(context).size.width * 0.35,
       child: TextField(
@@ -58,7 +58,18 @@ class CustomTextField extends StatelessWidget {
             color: hintColor,
             fontSize: fontsize,
           ),
-          border: InputBorder.none,
+          border: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.blue[50]!,
+            ),
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.blue[50]!,
+            ),
+            borderRadius: BorderRadius.circular(5.0),
+          ),
         ),
         obscureText: obscureText,
         style: TextStyle(

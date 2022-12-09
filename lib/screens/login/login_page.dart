@@ -172,6 +172,7 @@ class _LoginPageState extends State<LoginPage> {
                                     email,
                                     password,
                                   ));
+                              print("pressed");
                             },
                           ),
                         ),

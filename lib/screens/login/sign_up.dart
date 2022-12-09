@@ -1,5 +1,5 @@
-
 import 'package:berchem_pizza_web/languages/language_constants.dart';
+import 'package:berchem_pizza_web/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -135,14 +135,11 @@ class _RegisterViewState extends State<RegisterView> {
                             ),
                             InkWell(
                               onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => const LoginPage(),
-                                  ),
-                                );
+                                Navigator.pushNamed(
+                                    context, UserLoginView.routeName);
                               },
                               child: TextWidget(
-                                text:translation(context).loginText,
+                                text: translation(context).loginText,
                                 textcolor: Colors.blue,
                                 textsize: 18,
                                 fontWeight: FontWeight.normal,
@@ -187,7 +184,7 @@ class _RegisterViewState extends State<RegisterView> {
                             height: 0.05,
                             icon: Icons.mail,
                             iconColor: Colors.grey,
-                            hinttext:translation(context).email,
+                            hinttext: translation(context).email,
                             fontsize: 15,
                             obscureText: false),
                         WSizedBox(wval: 0, hval: 0.02),
@@ -213,6 +210,7 @@ class _RegisterViewState extends State<RegisterView> {
                           fontweight: FontWeight.bold,
                           fontcolor: Colors.lightGreen,
                           onPressed: () async {
+                            print("pressed");
                             final fName = _firstName.text;
                             final lName = _lastName.text;
                             final email = _email.text;
