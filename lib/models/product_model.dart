@@ -1,53 +1,63 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:equatable/equatable.dart';
 
-class FoodModle {
-  final String image;
+class Product extends Equatable {
+  final String id;
+  final String? priceId;
   final String name;
-  final int price;
-  FoodModle({required this.image, required this.name, required this.price});
-}
+  final String category;
+  final String description;
+  final String imageUrl;
+  final String price;
+  // final String extra;
 
-class Product {
-  final String image, title;
-  final int id;
-
-  Product({
+  const Product({
     required this.id,
-    required this.image,
-    required this.title,
+    this.priceId,
+    required this.name,
+    required this.category,
+    required this.description,
+    required this.imageUrl,
+    required this.price,
+    // required this.extra,
   });
-}
 
-List<Product> products = [
-  Product(
-    id: 1,
-    title: "Big sandwich bamburger",
-    image: "assets/images/big-sandwich-hamburger.jpg",
-  ),
-  Product(
-    id: 2,
-    title: "Chicken pizza with pepper",
-    image: "assets/images/chicken-pizza-with-bell-red-yellow-pepper.jpg",
-  ),
-  Product(
-    id: 3,
-    title: "Crispy fish nuggets",
-    image: "assets/images/crispy-fish-nuggets-served.jpg",
-  ),
-  Product(
-    id: 4,
-    title: "Chicken prawn cheese fish",
-    image:
-        "assets/images/four-boxes-nuggets-with-chicken-prawn-cheese-fish.jpg",
-  ),
-  Product(
-    id: 5,
-    title: "French fries",
-    image: "assets/images/french-fries.jpg",
-  ),
-  Product(
-    id: 6,
-    title: "Specky burger",
-    image: "assets/images/specky-burger.jpg",
-  ),
-];
+  static Product fromSnap(DocumentSnapshot snap) {
+    var snapshot = snap.data() as Map<String, dynamic>;
+
+    return Product(
+      name: snapshot["name"] ?? "",
+      priceId: snapshot["priceId"] ?? "",
+      id: snapshot["id"] ?? "",
+      category: snapshot["category"] ?? "",
+      description: snapshot["description"] ?? "",
+      imageUrl: snapshot["imageUrl"] ?? "",
+      price: snapshot["price"] ?? "",
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "priceId": priceId,
+        "id": id,
+        "category": category,
+        "description": description,
+        "imageUrl": imageUrl,
+        "price": price,
+      };
+
+  // factory Product.fromSnapshot(Map<String, dynamic> snap) {
+  //   return Product(
+  //     id: snap['id'].toString(),
+  //     // restaurantId: snap['restaurantId'],
+  //     name: snap['name'],
+  //     category: snap['category'],
+  //     description: snap['description'],
+  //     imageUrl: snap['imageUrl'],
+  //     price: snap['price'],
+  //   );
+  // }
+
+  @override
+  List<Object?> get props => [id, name, category, description, imageUrl, price];
+}

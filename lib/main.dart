@@ -1,62 +1,79 @@
-// ignore_for_file: avoid_print
-
-import 'package:berchem_pizza_web/screens/login_page.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'blocks/login/auth/firebase_auth_provider.dart';
+import 'blocks/login/login_bloc.dart';
 
-import 'screens/home/home_screen.dart';
-import 'screens/sign_up.dart';
+import 'config/theme.dart';
+import 'config/app_router.dart';
+
+import 'languages/language_constants.dart';
+import 'screens/home/intro/home/home_page_intro.dart';
+import 'simple_bloc_observer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    // Replace with actual values
     options: const FirebaseOptions(
-      apiKey: "AIzaSyCLPHdPQscw7J5pHho3vNIAWG8BzSadvDI",
-      appId: "1:799306159315:web:98432c0577227df6c33026",
-      messagingSenderId: "799306159315",
-      projectId: "berchem-pizza",
-    ),
+        apiKey: "AIzaSyCLPHdPQscw7J5pHho3vNIAWG8BzSadvDI",
+        appId: "1:799306159315:web:98432c0577227df6c33026",
+        messagingSenderId: "799306159315",
+        projectId: "berchem-pizza",
+        storageBucket: "berchem-pizza.appspot.com"),
   );
-  runApp(MyApp());
+  Bloc.observer = SimpleBlocObserver();
+  runApp(const MyApp());
 }
 
-/*
-const firebaseConfig = {
-    apiKey: "AIzaSyCLPHdPQscw7J5pHho3vNIAWG8BzSadvDI",
-    authDomain: "berchem-pizza.firebaseapp.com",
-    projectId: "berchem-pizza",
-    storageBucket: "berchem-pizza.appspot.com",
-    messagingSenderId: "799306159315",
-    appId: "1:799306159315:web:98432c0577227df6c33026",
-    measurementId: "G-VKMNVP2VFK"
-  };*/
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
 
-class MyApp extends StatelessWidget {
-  MyApp({super.key});
-  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+  @override
+  State<MyApp> createState() => _MyAppState();
+  static void setLocale(BuildContext context, Locale newLocale) {
+    _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+    state?.setLocale(newLocale);
+  }
+}
 
-  // This widget is the root of your application.
+class _MyAppState extends State<MyApp> {
+  Locale? _locale;
+
+  setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    getLocale().then((locale) => {setLocale(locale)});
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          //fontFamily: 'Montserrat',
-        ),
-        //home: const HomeScreen(),
-        home: FutureBuilder(
-          future: _initialization,
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              print("error");
-            }
-            if (snapshot.connectionState == ConnectionState.done) {
-              return const SignUp();
-            }
-            return const CircularProgressIndicator();
-          },
-        ));
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => AuthBloc(FirebaseAuthProvider())),
+      ],
+      child: MaterialApp(
+        title: "Berchem Pizza",
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: _locale,
+        theme: theme(),
+        onGenerateRoute: AppRouter.onGenerateRoute,
+        initialRoute: HomePageIntro.routeName,
+      ),
+    );
   }
 }
